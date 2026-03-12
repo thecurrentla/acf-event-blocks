@@ -1,5 +1,4 @@
-( function(wp) {
-
+(function (wp) {
 	var registerBlockType = wp.blocks.registerBlockType;
 	var InspectorControls = wp.editor.InspectorControls;
 	var TextControl = wp.components.TextControl;
@@ -11,8 +10,8 @@
 	var DatePicker = wp.components.DatePicker;
 	var __ = wp.i18n.__;
 
-	function acfes_dateFormatted(date){
-		if(date === null){
+	function acfes_dateFormatted(date) {
+		if (date === null) {
 			var date = moment().format("YYYY-MM-DD");
 		} else {
 			var date = moment(date).format("YYYY-MM-DD");
@@ -20,23 +19,23 @@
 		return date;
 	}
 
-	registerBlockType( 'acfes/schedule-block', {
-		title: 'Conference Schedule',
-		icon: 'schedule',
-		category: 'acfes-event-blocks',
+	registerBlockType("acfes/schedule-block", {
+		title: "Conference Schedule",
+		icon: "schedule",
+		category: "acfes-event-blocks",
 		supports: {
 			align: true,
-			align: ['wide']
+			align: ["wide"],
 		},
 		attributes: {
-			date: {type: 'string', default: acfes_dateFormatted(null)},
-			color_scheme: {type: 'string', default: 'light'},
-			schedule_layout: {type: 'string', default: 'table'},
-			session_link: {type: 'string', default: 'permalink'},
-			speaker_link: {type: 'string', default: 'permalink'}
+			date: { type: "string", default: acfes_dateFormatted(null) },
+			color_scheme: { type: "string", default: "light" },
+			schedule_layout: { type: "string", default: "table" },
+			session_link: { type: "string", default: "permalink" },
+			speaker_link: { type: "string", default: "permalink" },
 		},
 
-		edit: function( props ) {
+		edit: function (props) {
 			var attributes = props.attributes;
 			var setAttributes = props.setAttributes;
 
@@ -48,71 +47,72 @@
 
 			return [
 				el(ServerSideRender, {
-						block: "acfes/schedule-block",
-						attributes: props.attributes
+					block: "acfes/schedule-block",
+					attributes: props.attributes,
 				}),
-				el(InspectorControls, {},
+				el(
+					InspectorControls,
+					{},
 					el(DatePicker, {
-							currentDate : date,
-							locale: 'en',
-							selected: date,
-							onChange: function(value){
-								setAttributes({date: acfes_dateFormatted(value)});
-							}
+						currentDate: date,
+						locale: "en",
+						selected: date,
+						onChange: function (value) {
+							setAttributes({ date: acfes_dateFormatted(value) });
+						},
 					}),
 					el(SelectControl, {
-						label: 'Color Scheme',
+						label: "Color Scheme",
 						value: color_scheme,
 						options: [
-							{value: 'light', label: 'Light'},
-							{value: 'dark', label: 'Dark'}
+							{ value: "light", label: "Light" },
+							{ value: "dark", label: "Dark" },
 						],
-						onChange: function(value){
-							setAttributes({color_scheme: value});
-						}
+						onChange: function (value) {
+							setAttributes({ color_scheme: value });
+						},
 					}),
 					el(SelectControl, {
-						label: 'Schedule Layout',
+						label: "Schedule Layout",
 						value: schedule_layout,
 						options: [
-							{value: 'table', label: 'Table'},
-							{value: 'grid', label: 'Grid'}
+							{ value: "table", label: "Table" },
+							{ value: "grid", label: "Grid" },
 						],
-						onChange: function(value){
-							setAttributes({schedule_layout: value});
-						}
+						onChange: function (value) {
+							setAttributes({ schedule_layout: value });
+						},
 					}),
 					el(SelectControl, {
-						label: 'Session Link',
+						label: "Session Link",
 						value: session_link,
 						options: [
-							{value: 'permalink', label: 'Permalink'},
-							{value: 'anchor', label: 'Anchor'},
-							{value: 'none', label: 'None'}
+							{ value: "permalink", label: "Permalink" },
+							{ value: "anchor", label: "Anchor" },
+							{ value: "none", label: "None" },
 						],
-						onChange: function(value){
-							setAttributes({session_link: value});
-						}
+						onChange: function (value) {
+							setAttributes({ session_link: value });
+						},
 					}),
 					el(SelectControl, {
-						label: 'Speaker Link',
+						label: "Speaker Link",
 						value: speaker_link,
 						options: [
-							{value: 'permalink', label: 'Permalink'},
-							{value: 'anchor', label: 'Anchor'},
-							{value: 'none', label: 'Hide'}
+							{ value: "permalink", label: "Permalink" },
+							{ value: "anchor", label: "Anchor" },
+							{ value: "none", label: "Hide" },
 						],
-						onChange: function(value){
-							setAttributes({speaker_link: value});
-						}
+						onChange: function (value) {
+							setAttributes({ speaker_link: value });
+						},
 					}),
 				),
 			];
 		},
 
-		save: function(props) {
+		save: function (props) {
 			return null;
-		}
-
+		},
 	});
-}(window.wp));
+})(window.wp);
