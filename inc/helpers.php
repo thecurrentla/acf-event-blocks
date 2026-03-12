@@ -557,6 +557,35 @@ function acfes_get_post_object_anchor_list( $post_objects ) {
 	}
 }
 
+/**
+* Return Post Object Text List
+*/
+
+function acfes_get_post_object_text_list( $post_objects ) {
+	if ( $post_objects ) {
+		$num_items = count( $post_objects ); // how many terms are there
+		$i         = 0;
+
+		$open  = '<div class="url-list">';
+		$out[] = '<ul>';
+		foreach ( $post_objects as $post_object ) {
+			if ( ++$i === $num_items ) { // if this is the last one
+				$out[] = sprintf(
+					'<li>%1$s</li></ul>',
+					get_the_title( $post_object->ID )
+				);
+			} else {
+				$out[] = sprintf(
+					'<li>%1$s</li>',
+					get_the_title( $post_object->ID )
+				);
+			}
+		}
+		$close = "</ul></div>\n";
+		return $open . implode( '', $out ) . $close;
+	}
+}
+
 
 /**
  * Return an unordered list of linked social media icons, based on the urls provided in the Customizer Sortable Repeater

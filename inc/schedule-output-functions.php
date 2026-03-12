@@ -351,6 +351,8 @@ function acfes_schedule_output( $props ) {
 						$content .= '<span class="acfes-session-speakers">' . acfes_get_post_object_anchor_list( $speakers ) . '</span>';
 					} elseif ( 'permalink' === $attr['speaker_link'] ) {
 						$content .= '<span class="acfes-session-speakers">' . acfes_get_post_object_url_list( $speakers ) . '</span>';
+					} else {
+						$content .= '<span class="acfes-session-speakers">' . acfes_get_post_object_text_list( $speakers ) . '</span>';
 					}
 				}
 
@@ -580,10 +582,12 @@ function acfes_schedule_output( $props ) {
 
 			// Add speakers names to the output string.
 			if ( $speakers ) {
-				if ( 'anchor' == $attr['session_link'] ) {
+				if ( 'anchor' == $attr['speaker_link'] ) {
 					$html .= '<div class="acfes-session-speakers">' . acfes_get_post_object_anchor_list( $speakers ) . '</div>';
-				} else {
+				} elseif ( 'permalink' === $attr['speaker_link'] ) {
 					$html .= '<div class="acfes-session-speakers">' . acfes_get_post_object_url_list( $speakers ) . '</div>';
+				} else {
+					$html .= '<div class="acfes-session-speakers">' . acfes_get_post_object_text_list( $speakers ) . '</div>';
 				}
 			}
 			if ( function_exists( 'get_favorites_button' ) ) {

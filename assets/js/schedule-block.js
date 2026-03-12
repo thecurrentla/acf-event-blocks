@@ -101,7 +101,7 @@
 						options: [
 							{ value: "permalink", label: "Permalink" },
 							{ value: "anchor", label: "Anchor" },
-							{ value: "none", label: "Hide" },
+							{ value: "none", label: "None" },
 						],
 						onChange: function (value) {
 							setAttributes({ speaker_link: value });
