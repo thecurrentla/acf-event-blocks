@@ -336,11 +336,11 @@ function acfes_schedule_output( $props ) {
 
 				// Determine the session title
 				if ( 'permalink' === $attr['session_link'] && ( 'custom' !== $session_type || 1 === $break_link ) ) {
-					$session_title_html = sprintf( '<h3><a class="acfes-session-title" href="%s">%s</a></h3>', esc_url( get_permalink( $session->ID ) ), $session_title );
+					$session_title_html = sprintf( '<strong class=""><a class="acfes-session-title" href="%s">%s</a></strong>', esc_url( get_permalink( $session->ID ) ), $session_title );
 				} elseif ( 'anchor' === $attr['session_link'] && ( 'custom' !== $session_type || 1 === $break_link ) ) {
-					$session_title_html = sprintf( '<h3><a class="acfes-session-title" href="%s">%s</a></h3>', esc_url( '#' . get_post_field( 'post_name', $session->ID ) ), $session_title );
+					$session_title_html = sprintf( '<strong class=""><a class="acfes-session-title" href="%s">%s</a></strong>', esc_url( '#' . get_post_field( 'post_name', $session->ID ) ), $session_title );
 				} else {
-					$session_title_html = sprintf( '<h3><span class="acfes-session-title">%s</span></h3>', $session_title );
+					$session_title_html = sprintf( '<strong class=""><span class="acfes-session-title">%s</span></strong>', $session_title );
 				}
 
 				$content .= $session_title_html;
@@ -565,11 +565,11 @@ function acfes_schedule_output( $props ) {
 			$html .= '<div class="acfes-session-cell-content">';
 			// Determine the session title
 			if ( 'permalink' == $attr['session_link'] && ( 'custom' !== $session_type || 1 == $break_link ) ) {
-				$html .= sprintf( '<h3><a class="acfes-session-title" href="%s">%s</a></h3>', esc_url( get_permalink( $session->ID ) ), $session_title );
+				$html .= sprintf( '<strong class=""><a class="acfes-session-title" href="%s">%s</a></strong>', esc_url( get_permalink( $session->ID ) ), $session_title );
 			} elseif ( 'anchor' == $attr['session_link'] && ( 'custom' !== $session_type || 1 == $break_link ) ) {
-				$html .= sprintf( '<h3><a class="acfes-session-title" href="%s">%s</a></h3>', esc_url( '#' . get_post_field( 'post_name', $session->ID ) ), $session_title );
+				$html .= sprintf( '<strong class=""><a class="acfes-session-title" href="%s">%s</a></strong>', esc_url( '#' . get_post_field( 'post_name', $session->ID ) ), $session_title );
 			} else {
-				$html .= sprintf( '<h3><span class="acfes-session-title">%s</span></h3>', $session_title );
+				$html .= sprintf( '<strong class=""><span class="acfes-session-title">%s</span></strong>', $session_title );
 			}
 
 			// Add time to the output string
