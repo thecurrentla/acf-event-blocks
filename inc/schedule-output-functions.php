@@ -79,6 +79,36 @@ function acfes_get_schedule_tracks( $selected_tracks ) {
 }
 
 /**
+ * Return an associative array of term_id -> term object mapping for all selected locations.
+ *
+ * In case of 'all' is used as a value for $selected_locations, information for all available tracks
+ * gets returned.
+ *
+ * @param string $selected_locations Comma-separated list of tracks to display or 'all'.
+ *
+ * @return array Associative array of terms with term_id as the key.
+ */
+function acfes_get_schedule_locations( $selected_locations ) {
+	$locations = array();
+	if ( 'all' === $selected_locations ) {
+		// Include all locations.
+		$locations = get_terms( 'acfes_location' );
+	} else {
+		// Loop through given locations and look for terms.
+		$acfes_terms = array_map( 'trim', explode( ',', $selected_locations ) );
+
+		foreach ( $acfes_terms as $acfes_term_slug ) {
+			$acfes_term = get_term_by( 'slug', $acfes_term_slug, 'acfes_track' );
+			if ( $acfes_term ) {
+				$locations[ $acfes_term->term_id ] = $acfes_term;
+			}
+		}
+	}
+
+	return $locations;
+}
+
+/**
  * Return a time-sorted associative array mapping timestamp -> track_id -> session id.
  *
  * @param string $schedule_date               Date for which the sessions should be retrieved.
@@ -244,11 +274,15 @@ function acfes_preprocess_schedule_attributes( $props ) {
 function acfes_schedule_output( $props ) {
 
 	$attr                        = acfes_preprocess_schedule_attributes( $props );
+	$locations                   = acfes_get_schedule_locations( "all" );
 	$tracks                      = acfes_get_schedule_tracks( $attr['tracks'] );
 	$tracks_explicitly_specified = 'all' !== $attr['tracks'];
 	$sessions                    = acfes_get_schedule_sessions( $attr['date'], $tracks_explicitly_specified, $tracks );
 	$columns                     = acfes_get_schedule_columns( $tracks, $sessions, $tracks_explicitly_specified );
 	$rand                        = wp_rand( 1, 100 );
+
+
+	// do_action("qm/debug", $columns);
 
 	// Table Layout
 	if ( 'table' === $attr['schedule_layout'] && $sessions ) {
