@@ -478,7 +478,7 @@ function acfes_schedule_output( $props ) {
 	</style>';
 
 		// Schedule Wrapper
-		$html .= '<div class="schedule acfes-schedule acfes-color-scheme-' . $attr['color_scheme'] . ' acfes-layout-' . $attr['schedule_layout'] . ' grid-' . $rand . '" aria-labelledby="schedule-heading">';
+		$html .= '<div class="schedule acfes-schedule acfes-color-scheme-' . $attr['color_scheme'] . ' acfes-layout-' . $attr['schedule_layout'] . ' grid-' . $rand . '">';
 
 		// Track Titles
 		if ( $tracks ) {
@@ -494,7 +494,7 @@ function acfes_schedule_output( $props ) {
 		// Time Slots
 		if ( $array_times ) {
 			foreach ( $array_times as $array_time ) {
-				$html .= '<h2 class="acfes-time" style="grid-row: time-' . $array_time . ';">' . gmdate( $time_format, $array_time ) . '</h2>';
+				$html .= '<time class="acfes-time" style="grid-row: time-' . $array_time . ';">' . gmdate( $time_format, $array_time ) . '</time>';
 			}
 		}
 

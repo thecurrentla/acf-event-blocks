@@ -509,13 +509,13 @@ function acfes_get_post_object_url_list( $post_objects ) {
 		foreach ( $post_objects as $post_object ) {
 			if ( ++$i === $num_items ) { // if this is the last one
 				$out[] = sprintf(
-					'<li><a aria-label="Speaker %2$s" href="%1$s" >%2$s</a></li></ul>',
+					'<li><a href="%1$s">%2$s</a></li></ul>',
 					esc_url( get_permalink( $post_object->ID ) ),
 					get_the_title( $post_object->ID )
 				);
 			} else {
 				$out[] = sprintf(
-					'<li><a aria-label="Speaker %2$s" href="%1$s" >%2$s</a></li>',
+					'<li><a href="%1$s">%2$s</a></li>',
 					esc_url( get_permalink( $post_object->ID ) ),
 					get_the_title( $post_object->ID )
 				);
@@ -540,13 +540,13 @@ function acfes_get_post_object_anchor_list( $post_objects ) {
 		foreach ( $post_objects as $post_object ) {
 			if ( ++$i === $num_items ) { // if this is the last one
 				$out[] = sprintf(
-					'<li><a aria-label="Speaker %2$s" href="#%1$s" >%2$s</a></li></ul>',
+					'<li><a href="#%1$s">%2$s</a></li></ul>',
 					esc_html( acfes_anchor( get_the_title( $post_object->ID ) ) ),
 					get_the_title( $post_object->ID )
 				);
 			} else {
 				$out[] = sprintf(
-					'<li><a aria-label="Speaker %2$s" href="#%1$s" >%2$s</a></li>',
+					'<li><a href="#%1$s">%2$s</a></li>',
 					esc_html( acfes_anchor( get_the_title( $post_object->ID ) ) ),
 					get_the_title( $post_object->ID )
 				);
@@ -678,7 +678,7 @@ function the_acfes_web_links( $fieldname = '', $id = null, $label_field = '', $p
 					$link = get_sub_field( 'acfes_link', $id );
 					?>
 
-					<a aria-label="<?php echo esc_html( $link['title'] ); ?>" href="<?php echo esc_url( $link['url'] ); ?>" target="<?php echo esc_attr( $link['target'] ); ?>"><?php echo esc_html( $link['title'] ); ?></a>
+					<a href="<?php echo esc_url( $link['url'] ); ?>" target="<?php echo esc_attr( $link['target'] ); ?>"><?php echo esc_html( $link['title'] ); ?></a>
 
 				<?php endwhile; ?>
 				</nav>
@@ -727,7 +727,7 @@ function acfes_get_post_object_image_list( $post_objects ) {
 		$out[] = '';
 		foreach ( $post_objects as $post_object ) {
 			$out[] = sprintf(
-				'<div class="url-image-list--item"><figure class="post--thumbnail acfes-post-thumbnail" style="background-image:url(%3$s)"></figure><a aria-label="Speaker %2$s" href="%1$s" >%2$s</a></div>',
+				'<div class="url-image-list--item"><figure class="post--thumbnail acfes-post-thumbnail" style="background-image:url(%3$s)"></figure><a href="%1$s" >%2$s</a></div>',
 				esc_url( get_permalink( $post_object->ID ) ),
 				get_the_title( $post_object->ID ),
 				get_the_post_thumbnail_url( $post_object->ID )

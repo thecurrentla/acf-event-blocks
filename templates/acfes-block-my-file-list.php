@@ -14,7 +14,7 @@ if ( $slides ) : ?>
 <div class="<?php echo esc_attr( $class_name ); ?>">
 	<div class="entry-meta block-meta">
 		<h3><?php esc_html_e( 'Slides', 'acfes' ); ?></h3>
-			<div class="slide-link"><a aria-label="Link to Slides" href="<?php echo esc_url( $slides ); ?>"><?php esc_html_e( 'Link to Slides', 'acfes' ); ?></a></div>
+			<div class="slide-link"><a href="<?php echo esc_url( $slides ); ?>"><?php esc_html_e( 'Link to Slides', 'acfes' ); ?></a></div>
 	</div>
 </div>
 <?php endif; ?>
