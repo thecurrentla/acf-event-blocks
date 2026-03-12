@@ -369,7 +369,7 @@ function acfes_schedule_output( $props ) {
 
 				// If the next element in the table is the same as the current one, use colspan
 				if ( $key !== key( array_slice( $columns, -1, 1, true ) ) ) {
-					while ( $pair = each( $columns_clone ) ) {
+					foreach ($columns_clone as $pair) {
 						if ( $pair['key'] === $key ) {
 							continue;
 						}
