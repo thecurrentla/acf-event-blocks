@@ -36,17 +36,17 @@ function acfes_register_post_types() {
 
 		$sessionargs = array(
 			'labels'              => $sessionlabels,
-			'public'              => true, // bool (default is FALSE)
+			'public'              => false, // bool (default is FALSE)
 			'publicly_queryable'  => true, // bool (defaults to 'public')
-			'exclude_from_search' => false, // bool (defaults to 'public')
+			'exclude_from_search' => true, // bool (defaults to 'public')
 			'show_ui'             => true, // bool (defaults to 'public')
 			'show_in_menu'        => true, // bool (defaults to 'show_ui')
-			'show_in_nav_menus'   => true, // bool (defaults to 'public')
-			'show_in_admin_bar'   => true, // bool (defaults to 'show_in_menu')
+			'show_in_nav_menus'   => false, // bool (defaults to 'public')
+			'show_in_admin_bar'   => false, // bool (defaults to 'show_in_menu')
 			'show_in_rest'        => true, // bool (for gutenberg support)
 			'rest_base'           => 'sessions',
-			'query_var'           => true, // bool|string (defaults to TRUE - post type name)
-			'rewrite'             => array( 'slug' => 'session', 'with_front' => false ), // true/false whether to append slug to url i.e. /blog/blog-post
+			'query_var'           => false, // bool|string (defaults to TRUE - post type name)
+			'rewrite'             => false, // true/false whether to append slug to url i.e. /blog/blog-post
 			'capability_type'     => 'acfes_session',
 			'capabilities'        => array(
 				'publish_posts'      => 'publish_acfes_sessions',
@@ -59,7 +59,7 @@ function acfes_register_post_types() {
 			),
 			'has_archive'         => false, // bool|string (defaults to FALSE)
 			'hierarchical'        => false, // bool (defaults to FALSE)
-			'menu_position'       => 5, // int SEE COMMENTS AT BOTTOM
+			'menu_position'       => 35, // int SEE COMMENTS AT BOTTOM
 			'menu_icon'           => 'dashicons-schedule', //https://developer.wordpress.org/resource/dashicons/
 			'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'revisions', 'publicize', 'wpcom-markdown', 'custom-fields' ),
 		);
@@ -88,16 +88,16 @@ function acfes_register_post_types() {
 
 		$speakerargs = array(
 			'labels'              => $speakerlabels,
-			'public'              => true, // bool (default is FALSE)
+			'public'              => false, // bool (default is FALSE)
 			'publicly_queryable'  => true, // bool (defaults to 'public')
-			'exclude_from_search' => false, // bool (defaults to 'public')
+			'exclude_from_search' => true, // bool (defaults to 'public')
 			'show_ui'             => true, // bool (defaults to 'public')
 			'show_in_menu'        => true, // bool (defaults to 'show_ui')
-			'show_in_nav_menus'   => true, // bool (defaults to 'public')
-			'show_in_admin_bar'   => true, // bool (defaults to 'show_in_menu')
+			'show_in_nav_menus'   => false, // bool (defaults to 'public')
+			'show_in_admin_bar'   => false, // bool (defaults to 'show_in_menu')
 			'show_in_rest'        => true, // bool (for gutenberg support)
-			'query_var'           => true, // bool|string (defaults to TRUE - post type name)
-			'rewrite'             => array( 'slug' => 'speaker', 'with_front' => false ), // true/false whether to append slug to url i.e. /blog/blog-post
+			'query_var'           => false, // bool|string (defaults to TRUE - post type name)
+			'rewrite'             => false, // true/false whether to append slug to url i.e. /blog/blog-post
 			'capability_type'     => 'acfes_speaker',
 			'capabilities'        => array(
 				'publish_posts'      => 'publish_acfes_speakers',
@@ -108,9 +108,9 @@ function acfes_register_post_types() {
 				'delete_post'        => 'delete_acfes_speaker',
 				'read_post'          => 'read_acfes_speaker',
 			),
-			'has_archive'         => true, // bool|string (defaults to FALSE)
+			'has_archive'         => false, // bool|string (defaults to FALSE)
 			'hierarchical'        => false, // bool (defaults to FALSE)
-			'menu_position'       => 6, // int SEE COMMENTS AT BOTTOM
+			'menu_position'       => 36, // int SEE COMMENTS AT BOTTOM
 			'menu_icon'           => 'dashicons-id', //https://developer.wordpress.org/resource/dashicons/
 			'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'revisions', 'publicize', 'wpcom-markdown', 'custom-fields' ),
 		);
@@ -139,16 +139,16 @@ function acfes_register_post_types() {
 
 		$sponsorargs = array(
 			'labels'              => $sponsorlabels,
-			'public'              => true, // bool (default is FALSE)
+			'public'              => false, // bool (default is FALSE)
 			'publicly_queryable'  => true, // bool (defaults to 'public')
-			'exclude_from_search' => false, // bool (defaults to 'public')
-			'show_ui'             => true, // bool (defaults to 'public')
+			'exclude_from_search' => true, // bool (defaults to 'public')
+			'show_ui'             => false, // bool (defaults to 'public')
 			'show_in_menu'        => true, // bool (defaults to 'show_ui')
-			'show_in_nav_menus'   => true, // bool (defaults to 'public')
-			'show_in_admin_bar'   => true, // bool (defaults to 'show_in_menu')
+			'show_in_nav_menus'   => false, // bool (defaults to 'public')
+			'show_in_admin_bar'   => false, // bool (defaults to 'show_in_menu')
 			'show_in_rest'        => true, // bool (for gutenberg support)
-			'query_var'           => true, // bool|string (defaults to TRUE - post type name)
-			'rewrite'             => array( 'slug' => 'sponsor', 'with_front' => false ), // true/false whether to append slug to url i.e. /blog/blog-post
+			'query_var'           => false, // bool|string (defaults to TRUE - post type name)
+			'rewrite'             => false, // true/false whether to append slug to url i.e. /blog/blog-post
 			'capability_type'     => 'acfes_sponsor',
 			'capabilities'        => array(
 				'publish_posts'      => 'publish_acfes_sponsors',
@@ -159,9 +159,9 @@ function acfes_register_post_types() {
 				'delete_post'        => 'delete_acfes_sponsor',
 				'read_post'          => 'read_acfes_sponsor',
 			),
-			'has_archive'         => true, // bool|string (defaults to FALSE)
+			'has_archive'         => false, // bool|string (defaults to FALSE)
 			'hierarchical'        => false, // bool (defaults to FALSE)
-			'menu_position'       => 7, // int SEE COMMENTS AT BOTTOM
+			'menu_position'       => 37, // int SEE COMMENTS AT BOTTOM
 			'menu_icon'           => 'dashicons-nametag', //https://developer.wordpress.org/resource/dashicons/
 			'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'revisions', 'publicize', 'wpcom-markdown', 'custom-fields' ),
 		);
@@ -190,16 +190,16 @@ function acfes_register_post_types() {
 
 		$exhibitorargs = array(
 			'labels'              => $exhibitorlabels,
-			'public'              => true, // bool (default is FALSE)
+			'public'              => false, // bool (default is FALSE)
 			'publicly_queryable'  => true, // bool (defaults to 'public')
-			'exclude_from_search' => false, // bool (defaults to 'public')
-			'show_ui'             => true, // bool (defaults to 'public')
+			'exclude_from_search' => true, // bool (defaults to 'public')
+			'show_ui'             => false, // bool (defaults to 'public')
 			'show_in_menu'        => true, // bool (defaults to 'show_ui')
-			'show_in_nav_menus'   => true, // bool (defaults to 'public')
-			'show_in_admin_bar'   => true, // bool (defaults to 'show_in_menu')
+			'show_in_nav_menus'   => false, // bool (defaults to 'public')
+			'show_in_admin_bar'   => false, // bool (defaults to 'show_in_menu')
 			'show_in_rest'        => true, // bool (for gutenberg support)
-			'query_var'           => true, // bool|string (defaults to TRUE - post type name)
-			'rewrite'             => array( 'slug' => 'exhibitor', 'with_front' => false ), // true/false whether to append slug to url i.e. /blog/blog-post
+			'query_var'           => false, // bool|string (defaults to TRUE - post type name)
+			'rewrite'             => false, // true/false whether to append slug to url i.e. /blog/blog-post
 			'capability_type'     => 'acfes_exhibitor',
 			'capabilities'        => array(
 				'publish_posts'      => 'publish_acfes_exhibitors',
@@ -210,9 +210,9 @@ function acfes_register_post_types() {
 				'delete_post'        => 'delete_acfes_exhibitor',
 				'read_post'          => 'read_acfes_exhibitor',
 			),
-			'has_archive'         => true, // bool|string (defaults to FALSE)
+			'has_archive'         => false, // bool|string (defaults to FALSE)
 			'hierarchical'        => false, // bool (defaults to FALSE)
-			'menu_position'       => 8, // int SEE COMMENTS AT BOTTOM
+			'menu_position'       => 38, // int SEE COMMENTS AT BOTTOM
 			'menu_icon'           => 'dashicons-awards', //https://developer.wordpress.org/resource/dashicons/
 			'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'revisions', 'publicize', 'wpcom-markdown', 'custom-fields' ),
 		);
