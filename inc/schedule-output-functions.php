@@ -186,33 +186,33 @@ function acfes_preprocess_schedule_attributes( $props ) {
 	if ( $props ) :
 
 		// Set Attribute values base on props
-		if ( $props['date'] ) {
+		if ( isset($props['date']) ) {
 			$attr['date'] = $props['date'];
 		}
 
-		if ( $props['color_scheme'] ) {
+		if ( isset($props['color_scheme']) ) {
 			$attr['color_scheme'] = $props['color_scheme'];
 		}
 
-		if ( $props['schedule_layout'] ) {
+		if ( isset($props['schedule_layout']) ) {
 			$attr['schedule_layout'] = $props['schedule_layout'];
 		}
 
-		if ( $props['session_link'] ) {
+		if ( isset($props['session_link']) ) {
 			$attr['session_link'] = $props['session_link'];
 		}
 
-		if ( $props['speaker_link'] ) {
+		if ( isset($props['speaker_link']) ) {
 			$attr['speaker_link'] = $props['speaker_link'];
 		}
 
-		if ( 'wide' === $props['align'] ) {
+		if ( isset($props['align']) && 'wide' === $props['align'] ) {
 			$attr['align'] = 'alignwide';
-		} elseif ( 'full' === $props['align'] ) {
+		} elseif ( isset($props['align']) && 'full' === $props['align'] ) {
 			$attr['align'] = 'alignfull';
 		}
 
-		if ( $props['tracks'] ) {
+		if ( isset($props['tracks']) ) {
 			$attr['tracks'] = $props['tracks'];
 		}
 
@@ -369,7 +369,7 @@ function acfes_schedule_output( $props ) {
 
 				// If the next element in the table is the same as the current one, use colspan
 				if ( $key !== key( array_slice( $columns, -1, 1, true ) ) ) {
-					while ( $pair = each( $columns_clone ) ) {
+					foreach ($columns_clone as $pair) {
 						if ( $pair['key'] === $key ) {
 							continue;
 						}
@@ -429,7 +429,7 @@ function acfes_schedule_output( $props ) {
 		// Remove last time item
 		unset( $array_times[ count( $array_times ) - 1 ] );
 
-		$html .= '<style>
+		$html = '<style>
 		@media screen and (min-width:48.75em) {
 		.acfes-layout-grid.grid-' . $rand . ' {
 			display: grid;
@@ -537,8 +537,8 @@ function acfes_schedule_output( $props ) {
 
 					// Don't save session track if track doesn't exist.
 					if ( $remove_track == true ) {
-						$tracks_array . array_push( $tracks_array, $session_track->slug );
-						$tracks_names_array . array_push( $tracks_names_array, $session_track->name );
+						array_push( $tracks_array, $session_track->slug );
+						array_push( $tracks_names_array, $session_track->name );
 					}
 				}
 			}
