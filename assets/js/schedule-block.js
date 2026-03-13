@@ -47,6 +47,7 @@
 			var speaker_link = props.attributes.speaker_link;
 
 			return [
+				// This isn't working, but only seems to be necessary in the editor.
 				// el(ServerSideRender, {
 				// 		block: "acfes/schedule-block",
 				// 		attributes: attributes
