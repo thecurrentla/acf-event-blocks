@@ -47,10 +47,10 @@
 			var speaker_link = props.attributes.speaker_link;
 
 			return [
-				el(ServerSideRender, {
-						block: "acfes/schedule-block",
-						attributes: props.attributes
-				}),
+				// el(ServerSideRender, {
+				// 		block: "acfes/schedule-block",
+				// 		attributes: attributes
+				// }),
 				el(InspectorControls, {},
 					el(DatePicker, {
 							currentDate : date,
