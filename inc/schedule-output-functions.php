@@ -9,7 +9,7 @@ defined( 'WPINC' ) || die();
 /**
 * The Main query
 */
-function acfes_session_query( $schedule_date, $tracks_explicitly_specified, $tracks ) {
+function acfes_session_query( $schedule_date, $tracks_explicitly_specified = false, $tracks = [] ) {
 	if ( $schedule_date && strtotime( $schedule_date ) ) {
 		$query_args = array(
 			'post_type'      => 'acfes_session',
@@ -105,6 +105,8 @@ function acfes_get_schedule_locations( $selected_locations ) {
 		}
 	}
 
+	var_dump($locations);
+
 	return $locations;
 }
 
@@ -119,18 +121,18 @@ function acfes_get_schedule_locations( $selected_locations ) {
  * @return array Associative array of session ids by time and track.
  */
 
-function acfes_get_schedule_sessions( $schedule_date, $tracks_explicitly_specified, $tracks ) {
+function acfes_get_schedule_sessions( $schedule_date, $locations_explicitly_specified, $locations ) {
 
 	// Loop through all sessions and assign them into the formatted
 	// $sessions array: $sessions[ $time ][ $track ] = $session_id
 	// Use 0 as the track ID if no tracks exist.
 	$sessions       = array();
-	$sessions_query = acfes_session_query( $schedule_date, $tracks_explicitly_specified, $tracks );
+	$sessions_query = acfes_session_query( $schedule_date, $locations_explicitly_specified, $locations );
 
 	if ( $sessions_query->post_count > 0 ) {
 		foreach ( $sessions_query->posts as $session ) {
 			$time        = get_post_meta( $session->ID, 'acfes_session_time' )[0];
-			$acfes_terms = get_the_terms( $session->ID, 'acfes_track' );
+			$acfes_terms = get_the_terms( $session->ID, 'acfes_location' );
 
 			if ( ! isset( $sessions[ $time ] ) ) {
 				$sessions[ $time ] = array();
@@ -161,20 +163,20 @@ function acfes_get_schedule_sessions( $schedule_date, $tracks_explicitly_specifi
  *
  * @return array Array of columns identified by term ids.
  */
-function acfes_get_schedule_columns( $tracks, $sessions, $tracks_explicitly_specified ) {
+function acfes_get_schedule_columns( $locations, $sessions, $locations_explicitly_specified ) {
 	$columns = array();
 
 	// Use tracks to form the columns.
-	if ( $tracks ) {
-		foreach ( $tracks as $track ) {
-			$columns[ $track->term_id ] = $track->term_id;
+	if ( $locations ) {
+		foreach ( $locations as $location ) {
+			$columns[ $location->term_id ] = $location->term_id;
 		}
 	} else {
 		$columns[0] = 0;
 	}
 
 	// Remove empty columns unless tracks have been explicitly specified.
-	if ( ! $tracks_explicitly_specified ) {
+	if ( ! $locations_explicitly_specified ) {
 		$used_terms = array();
 
 		foreach ( $sessions as $time => $entry ) {
@@ -205,6 +207,7 @@ function acfes_preprocess_schedule_attributes( $props ) {
 	$attr = array(
 		'date'            => null,
 		'tracks'          => 'all',
+		'locations'       => 'all',
 		'session_link'    => 'permalink', // permalink|anchor|none
 		'speaker_link'    => 'permalink', // permalink|anchor|none
 		'color_scheme'    => 'light', // light/dark
@@ -273,13 +276,14 @@ function acfes_preprocess_schedule_attributes( $props ) {
  */
 function acfes_schedule_output( $props ) {
 
-	$attr                        = acfes_preprocess_schedule_attributes( $props );
-	$locations                   = acfes_get_schedule_locations( "all" );
-	$tracks                      = acfes_get_schedule_tracks( $attr['tracks'] );
-	$tracks_explicitly_specified = 'all' !== $attr['tracks'];
-	$sessions                    = acfes_get_schedule_sessions( $attr['date'], $tracks_explicitly_specified, $tracks );
-	$columns                     = acfes_get_schedule_columns( $tracks, $sessions, $tracks_explicitly_specified );
-	$rand                        = wp_rand( 1, 100 );
+	$attr                            = acfes_preprocess_schedule_attributes( $props );
+	$locations                       = acfes_get_schedule_locations( $attr['locations'] );
+	$locations_explicitly_specified  = 'all' !== $attr['locations'];
+	$tracks                          = acfes_get_schedule_tracks( $attr['tracks'] );
+	$tracks_explicitly_specified     = 'all' !== $attr['tracks'];
+	$sessions                        = acfes_get_schedule_sessions( $attr['date'], $locations_explicitly_specified, $locations );
+	$columns                         = acfes_get_schedule_columns( $locations, $sessions, $locations_explicitly_specified );
+	$rand                            = wp_rand( 1, 100 );
 
 
 	// do_action("qm/debug", $columns);
@@ -440,10 +444,9 @@ function acfes_schedule_output( $props ) {
 	} elseif ( 'grid' === $attr['schedule_layout'] && $sessions ) {
 
 		$schedule_date = $attr['date'];
-		$time_format   = get_option( 'time_format', 'g:i a' );
-		$columns       = acfes_get_schedule_columns( $tracks, $sessions, $tracks_explicitly_specified );
+		$time_format = get_option( 'time_format', 'g:i a' );
 
-		$sessions_query = acfes_session_query( $schedule_date, $tracks_explicitly_specified, $tracks );
+		$sessions_query = acfes_session_query( $schedule_date, $locations_explicitly_specified, $locations );
 
 		$array_times = array();
 		foreach ( $sessions_query->posts as $session ) {
@@ -471,7 +474,7 @@ function acfes_schedule_output( $props ) {
 			display: grid;
 			grid-gap: 1em;
 			grid-template-rows:
-			[tracks] auto';
+			[locations] auto';
 
 		foreach ( $array_times as $array_time ) {
 			$html .= '[time-' . $array_time . '] 1fr';
@@ -482,27 +485,27 @@ function acfes_schedule_output( $props ) {
 		$html .= 'grid-template-columns: [times] 4em';
 
 		// Reset PHP Array Index
-		$total_tracks = array_values( $tracks );
-		$tracks = [];
+		$total_locations = array_values( $locations );
+		$locations = [];
 
-		// check to make sure the tracks are actually in use at all in this query
-		foreach ( $total_tracks as $track ) {
-			if ( in_array( $track->term_id, $columns, true ) ) {
-				$tracks[] = $track;
+		// check to make sure the locations are actually in use at all in this query
+		foreach ( $total_locations as $location ) {
+			if ( in_array( $location->term_id, $columns, true ) ) {
+				$locations[] = $location;
 			}
 		}
 
-		$len = count( $tracks );
+		$len = count( $locations );
 
 		// Check the above var dump for issue
 		for ( $i = 0; $i < ( $len ); $i++ ) {
 			if ( 0 === $i ) {
-				$html .= '[' . $tracks[ $i ]->slug . '-start] 1fr';
+				$html .= '[' . $locations[ $i ]->slug . '-start] 1fr';
 			} elseif ( ( $len - 1 ) === $i ) {
-				$html .= '[' . $tracks[ ( $i - 1 ) ]->slug . '-end ' . $tracks[ $i ]->slug . '-start] 1fr';
-				$html .= '[' . $tracks[ $i ]->slug . '-end];';
+				$html .= '[' . $locations[ ( $i - 1 ) ]->slug . '-end ' . $locations[ $i ]->slug . '-start] 1fr';
+				$html .= '[' . $locations[ $i ]->slug . '-end];';
 			} else {
-				$html .= '[' . $tracks[ ( $i - 1 ) ]->slug . '-end ' . $tracks[ $i ]->slug . '-start] 1fr';
+				$html .= '[' . $locations[ ( $i - 1 ) ]->slug . '-end ' . $locations[ $i ]->slug . '-start] 1fr';
 			}
 		}
 
@@ -527,6 +530,17 @@ function acfes_schedule_output( $props ) {
 			}
 		}
 
+		// Location Titles
+		if ( $locations ) {
+			foreach ( $locations as $location ) {
+				$html .= sprintf(
+					'<span class="acfes-col-location" style="grid-column: ' . $location->slug . '; grid-row: locations;"> <span class="acfes-location-name">%s</span> <span class="acfes-location-description">%s</span> </span>',
+					isset( $location->term_id ) ? esc_html( $location->name ) : '',
+					isset( $location->term_id ) ? esc_html( $location->description ) : ''
+				);
+			}
+		}
+
 		// Time Slots
 		if ( $array_times ) {
 			foreach ( $array_times as $array_time ) {
@@ -535,18 +549,20 @@ function acfes_schedule_output( $props ) {
 		}
 
 		foreach ( $sessions_query->posts as $session ) {
-			$classes              = array();
-			$session              = get_post( $session );
-			$session_url          = get_the_permalink( $session->ID );
-			$session_title        = apply_filters( 'the_title', $session->post_title );
-			$session_tracks       = get_the_terms( $session->ID, 'acfes_track' );
-			$session_track_titles = is_array( $session_tracks ) ? implode( ', ', wp_list_pluck( $session_tracks, 'name' ) ) : '';
-			$session_scheduled    = get_field( 'acfes_scheduled_session', $session->ID );
-			$session_type         = get_field( 'acfes_session_type', $session->ID );
-			$speakers             = get_field( 'acfes_session_speakers', $session->ID );
-			$break_link           = get_field( 'acfes_break_link', $session->ID );
-			$start_time           = strtotime( get_field( 'acfes_session_time', $session->ID ) );
-			$end_time             = strtotime( get_field( 'acfes_session_end_time', $session->ID ) );
+			$classes                   = array();
+			$session                   = get_post( $session );
+			$session_url               = get_the_permalink( $session->ID );
+			$session_title             = apply_filters( 'the_title', $session->post_title );
+			$session_tracks            = get_the_terms( $session->ID, 'acfes_track' );
+			$session_track_titles      = is_array( $session_tracks ) ? implode( ', ', wp_list_pluck( $session_tracks, 'name' ) ) : '';
+			$session_locations         = get_the_terms( $session->ID, 'acfes_location' );
+			$session_locations_titles  = is_array( $session_locations ) ? implode( ', ', wp_list_pluck( $session_locations, 'name' ) ) : '';
+			$session_scheduled         = get_field( 'acfes_scheduled_session', $session->ID );
+			$session_type              = get_field( 'acfes_session_type', $session->ID );
+			$speakers                  = get_field( 'acfes_session_speakers', $session->ID );
+			$break_link                = get_field( 'acfes_break_link', $session->ID );
+			$start_time                = strtotime( get_field( 'acfes_session_time', $session->ID ) );
+			$end_time                  = strtotime( get_field( 'acfes_session_end_time', $session->ID ) );
 
 			if ( ! $session_scheduled ) {
 				continue; // ignore if it shouldn't go on this grid
@@ -556,29 +572,53 @@ function acfes_schedule_output( $props ) {
 				$session_type = 'session';
 			}
 
-			$tracks_array       = array();
-			$tracks_names_array = array();
-			if ( $session_tracks ) {
-				foreach ( $session_tracks as $session_track ) {
+			// $tracks_array       = array();
+			// $tracks_names_array = array();
+			// if ( $session_tracks ) {
+			// 	foreach ( $session_tracks as $session_track ) {
 
-					// Check if the session track is in the main tracks array.
-					if ( $track ) {
-						$remove_track = false;
-						foreach ( $tracks as $track ) {
-							if ( $track->slug == $session_track->slug ) {
-								$remove_track = true;
+			// 		// Check if the session track is in the main tracks array.
+			// 		if ( $track ) {
+			// 			$remove_track = false;
+			// 			foreach ( $tracks as $track ) {
+			// 				if ( $track->slug == $session_track->slug ) {
+			// 					$remove_track = true;
+			// 				}
+			// 			}
+			// 		}
+
+			// 		// Don't save session track if track doesn't exist.
+			// 		if ( $remove_track == true ) {
+			// 			array_push( $tracks_array, $session_track->slug );
+			// 			array_push( $tracks_names_array, $session_track->name );
+			// 		}
+			// 	}
+			// }
+			// $tracks_classes = implode( ' ', $tracks_array );
+
+			$locations_array       = array();
+			$locations_names_array = array();
+			if ( $session_locations ) {
+				foreach ( $session_locations as $session_location ) {
+
+					// Check if the session location is in the main locations array.
+					if ( $location ) {
+						$remove_location = false;
+						foreach ( $locations as $location ) {
+							if ( $location->slug == $session_location->slug ) {
+								$remove_location = true;
 							}
 						}
 					}
 
-					// Don't save session track if track doesn't exist.
-					if ( $remove_track == true ) {
-						array_push( $tracks_array, $session_track->slug );
-						array_push( $tracks_names_array, $session_track->name );
+					// Don't save session location if location doesn't exist.
+					if ( $remove_location == true ) {
+						array_push( $locations_array, $session_location->slug );
+						array_push( $locations_names_array, $session_location->name );
 					}
 				}
 			}
-			$tracks_classes = implode( ' ', $tracks_array );
+			$locations_classes = implode( ' ', $locations_array );
 
 			// Add CSS classes to help with custom styles
 			if ( is_array( $session_tracks ) ) {
@@ -586,17 +626,26 @@ function acfes_schedule_output( $props ) {
 					$classes[] = 'acfes-track-' . $session_track->slug;
 				}
 			}
+			if ( is_array( $session_locations ) ) {
+				foreach ( $session_locations as $session_location ) {
+					$classes[] = 'acfes-location-' . $session_location->slug;
+				}
+			}
 			$classes[] = 'acfes-session-type-' . $session_type;
 			$classes[] = 'acfes-session-' . $session->post_name;
 
-			$tracks_array_length = esc_attr( count( $tracks_array ) );
+			$locations_array_length = esc_attr( count( $locations_array ) );
+			// $tracks_array_length = esc_attr( count( $tracks_array ) );
 
 			$grid_column_end = '';
-			if ( 1 !== $tracks_array_length ) {
-				$grid_column_end = ' / ' . $tracks_array[ $tracks_array_length - 1 ];
+			// if ( 1 !== $tracks_array_length ) {
+			// 	$grid_column_end = ' / ' . $tracks_array[ $tracks_array_length - 1 ];
+			// }
+			if ( 1 !== $locations_array_length ) {
+				$grid_column_end = ' / ' . $locations_array[ $locations_array_length - 1 ];
 			}
 
-			$html .= '<div class="' . esc_attr( implode( ' ', $classes ) ) . ' ' . $tracks_classes . '" style="grid-column: ' . $tracks_array[0] . $grid_column_end . '; grid-row: time-' . $start_time . ' / time-' . $end_time . ';">';
+			$html .= '<div class="' . esc_attr( implode( ' ', $classes ) ) . ' ' . $locations_classes . '" style="grid-column: ' . $locations_array[0] . $grid_column_end . '; grid-row: time-' . $start_time . ' / time-' . $end_time . ';">';
 
 			$html .= '<div class="acfes-session-cell-content">';
 			// Determine the session title
@@ -612,7 +661,7 @@ function acfes_schedule_output( $props ) {
 			$html .= '<div class="acfes-session-time">' . gmdate( $time_format, $start_time ) . ' - ' . gmdate( $time_format, $end_time ) . '</div>';
 
 			// Add tracks to the output string
-			$html .= '<div class="acfes-session-track">' . implode( ', ', $tracks_names_array ) . '</div>';
+			// $html .= '<div class="acfes-session-track">' . implode( ', ', $tracks_names_array ) . '</div>';
 
 			// Add speakers names to the output string.
 			if ( $speakers ) {
