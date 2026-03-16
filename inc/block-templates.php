@@ -2,7 +2,7 @@
 /**
 * Custom Plugin Templates for Single and Archives
 */
-add_filter( 'single_template', 'acfes_set_single_session_template' );
+// add_filter( 'single_template', 'acfes_set_single_session_template' );
 function acfes_set_single_session_template( $single_template ) {
 	global $post;
 
@@ -12,7 +12,7 @@ function acfes_set_single_session_template( $single_template ) {
 	return $single_template;
 }
 
-add_filter( 'archive_template', 'acfes_set_archive_template' );
+// add_filter( 'archive_template', 'acfes_set_archive_template' );
 function acfes_set_archive_template( $archive_template ) {
 	global $post;
 
@@ -182,7 +182,7 @@ function acfes_add_session_templates() {
 		)),
 	);
 }
-add_action( 'init', 'acfes_add_session_templates' );
+// add_action( 'init', 'acfes_add_session_templates' );
 
 // Add Speaker templates
 function acfes_add_speaker_templates() {
@@ -221,7 +221,7 @@ function acfes_add_speaker_templates() {
 		)),
 	);
 }
-add_action( 'init', 'acfes_add_speaker_templates' );
+// add_action( 'init', 'acfes_add_speaker_templates' );
 
 // Add Sponsor templates
 function acfes_add_sponsor_templates() {
@@ -262,7 +262,7 @@ function acfes_add_sponsor_templates() {
 		)),
 	);
 }
-add_action( 'init', 'acfes_add_sponsor_templates' );
+// add_action( 'init', 'acfes_add_sponsor_templates' );
 
 // Add Exhibitor templates
 function acfes_add_exhibitor_templates() {
@@ -303,4 +303,4 @@ function acfes_add_exhibitor_templates() {
 		)),
 	);
 }
-add_action( 'init', 'acfes_add_exhibitor_templates' );
+// add_action( 'init', 'acfes_add_exhibitor_templates' );

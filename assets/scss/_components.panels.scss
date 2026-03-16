@@ -13,27 +13,23 @@
 }
 
 .url-list {
-	display: inline-block;
+	display: block;
 	ul {
+		display: block;
 		list-style: none;
 		margin-left: 0;
 		padding: 0;
 	}
 
 	li {
-		display: inline-block;
-		margin: 0 2px;
-		& > a:after {
-			content: ",";
-		}
-		&:last-of-type a:after {
-			content: "";
-		}
-	}
+		display: inline;
+		margin: 0;
 
-	.acfes-schedule & {
-		li {
-			display: block;
+		&:after {
+			content: ", ";
+		}
+		&:last-of-type:after {
+			content: "";
 		}
 	}
 }

@@ -222,6 +222,16 @@ function acfes_register_post_types() {
 
 }
 
+
+function acfes_disable_block_editor($current_status, $post_type) {
+	if ("acfes_session" === $post_type || "acfes_speaker" === $post_type) {
+		return false;
+	}
+
+	return $current_status;
+}
+add_filter("use_block_editor_for_post_type", "acfes_disable_block_editor", 10, 2);
+
 // Change CPT title text
 add_action( 'gettext', 'acfes_change_title_text' );
 function acfes_change_title_text( $translation ) {

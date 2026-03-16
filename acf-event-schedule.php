@@ -56,26 +56,26 @@ class ACF_Event_Schedule_Plugin {
 		add_action( 'admin_print_styles', array( $this, 'acfes_admin_css' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'acfes_admin_enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'acfes_enqueue_scripts' ) );
-		// add_action( 'manage_posts_custom_column', array( $this, 'acfes_manage_post_types_columns_output' ), 10, 2 );
+		add_action( 'manage_posts_custom_column', array( $this, 'acfes_manage_post_types_columns_output' ), 10, 2 );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'acfes_add_block_editor_assets' ) );
-		add_action( 'plugins_loaded', array( 'Acfes_Block_Templates', 'get_instance' ) );
+		// add_action( 'plugins_loaded', array( 'Acfes_Block_Templates', 'get_instance' ) );
 		add_action( 'acf/init', 'register_acfes_block_types' );
 
-		register_block_type(
-			'acfes/schedule-block',
-			array(
-				'editor_script'   => 'schedule-block',
-				'attributes'      => array(
-					'date'            => array( 'type' => 'string' ),
-					'color_scheme'    => array( 'type' => 'string' ),
-					'session_link'    => array( 'type' => 'string' ),
-					'speaker_link'    => array( 'type' => 'string' ),
-					'schedule_layout' => array( 'type' => 'string' ),
-					'align'           => array( 'type' => 'string' ),
-				),
-				'render_callback' => array( $this, 'acfes_schedule_block_output' ),
-			),
-		);
+		// register_block_type(
+		// 	'acfes/schedule-block',
+		// 	array(
+		// 		'editor_script'   => 'schedule-block',
+		// 		'attributes'      => array(
+		// 			'date'            => array( 'type' => 'string' ),
+		// 			'color_scheme'    => array( 'type' => 'string' ),
+		// 			'session_link'    => array( 'type' => 'string' ),
+		// 			'speaker_link'    => array( 'type' => 'string' ),
+		// 			'schedule_layout' => array( 'type' => 'string' ),
+		// 			'align'           => array( 'type' => 'string' ),
+		// 		),
+		// 		'render_callback' => array( $this, 'acfes_schedule_block_output' ),
+		// 	),
+		// );
 
 		add_filter( 'manage_acfes_session_posts_columns', array( $this, 'acfes_manage_post_types_columns' ) );
 		add_filter( 'manage_edit-acfes_session_sortable_columns', array( $this, 'acfes_manage_sortable_columns' ) );
@@ -126,7 +126,7 @@ class ACF_Event_Schedule_Plugin {
 	**/
 	public function acfes_add_block_editor_assets() {
 		wp_enqueue_style( 'acfes-editor', plugins_url( '/assets/css/acfes-editor-style.css', __FILE__ ), array(), 1 );
-		wp_enqueue_script( 'schedule-block', plugin_dir_url( __FILE__ ) . 'assets/js/schedule-block.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor' ), 1, true );
+		// wp_enqueue_script( 'schedule-block', plugin_dir_url( __FILE__ ) . 'assets/js/schedule-block.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor' ), 1, true );
 	}
 
 	/**
@@ -217,16 +217,18 @@ class ACF_Event_Schedule_Plugin {
 		}
 
 		$session_type = get_field( 'acfes_session_type', $post->ID );
-		if ( ! in_array( $session_type, array( 'session', 'custom', 'mainstage' ), true ) ) {
+		if ( ! in_array( $session_type, array( 'session', 'break', 'special', 'keynote', 'custom' ), true ) ) {
 			$session_type = 'session';
 		}
 
 		if ( 'session' === $session_type ) {
 			$states['acfes-session-type'] = __( 'Session', 'acf-event-schedule' );
-		} elseif ( 'custom' === $session_type ) {
-			$states['acfes-session-type'] = __( 'Break/Lunch', 'acf-event-schedule' );
-		} elseif ( 'mainstage' === $session_type ) {
-			$states['acfes-session-type'] = __( 'Mainstage', 'acf-event-schedule' );
+		} elseif ( 'break' === $session_type ) {
+			$states['acfes-session-type'] = __( 'Break', 'acf-event-schedule' );
+		} elseif ( 'keynote' === $session_type ) {
+			$states['acfes-session-type'] = __( 'Keynote', 'acf-event-schedule' );
+		} elseif ( 'special' === $session_type ) {
+			$states['acfes-session-type'] = __( 'Special', 'acf-event-schedule' );
 		}
 
 		return $states;

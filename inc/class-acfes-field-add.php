@@ -97,179 +97,193 @@ function register_acfes_block_types() {
 
 	if ( function_exists( 'acf_register_block_type' ) ) {
 
-		// Event List
+		// Conference Schedule
 		acf_register_block_type(
 			array(
-				'name'            => 'acfes_block_list_posts',
-				'title'           => __( 'Event List Block' ),
-				'description'     => __( 'Select existing event content (speakers, sessions, sponsors, exhibitors) that will be displayed in a list format' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-wrapper-event-list.php',
+				'name'            => 'acfes_block_schedule',
+				'title'           => __( 'Conference Schedule' ),
+				'description'     => __( 'Displays the conference schedule' ),
+				'render_callback' => 'acfes_schedule_block_render',
 				'category'        => 'acfes-event-blocks',
-				'icon'            => 'excerpt-view',
-				'keywords'        => array( 'list', 'event' ),
+				'icon'            => 'schedule',
+				'keywords'        => array( 'schedule', 'event' ),
 				'mode'            => 'preview',
 			)
 		);
+
+		// Event List
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_list_posts',
+		// 		'title'           => __( 'Event List Block' ),
+		// 		'description'     => __( 'Select existing event content (speakers, sessions, sponsors, exhibitors) that will be displayed in a list format' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-wrapper-event-list.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'excerpt-view',
+		// 		'keywords'        => array( 'list', 'event' ),
+		// 		'mode'            => 'preview',
+		// 	)
+		// );
 
 		// Event Grid
-		acf_register_block_type(
-			array(
-				'name'            => 'acfes_block_grid_posts',
-				'title'           => __( 'Event Grid Block' ),
-				'description'     => __( 'Select existing event content (speakers, sessions, sponsors, exhibitors) that will be displayed in a grid format' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-wrapper-event-grid.php',
-				'category'        => 'acfes-event-blocks',
-				'icon'            => 'grid-view',
-				'keywords'        => array( 'grid', 'event' ),
-				'mode'            => 'preview',
-			)
-		);
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_grid_posts',
+		// 		'title'           => __( 'Event Grid Block' ),
+		// 		'description'     => __( 'Select existing event content (speakers, sessions, sponsors, exhibitors) that will be displayed in a grid format' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-wrapper-event-grid.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'grid-view',
+		// 		'keywords'        => array( 'grid', 'event' ),
+		// 		'mode'            => 'preview',
+		// 	)
+		// );
 
 		// Event Single
-		acf_register_block_type(
-			array(
-				'name'            => 'acfes_block_single_post',
-				'title'           => __( 'Event Single Block' ),
-				'description'     => __( 'Select a single existing Event item (speaker, session, sponsor, exhibitor)' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-wrapper-event-single.php',
-				'category'        => 'acfes-event-blocks',
-				'icon'            => 'index-card',
-				'keywords'        => array( 'single post', 'event' ),
-				'mode'            => 'peview',
-			)
-		);
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_single_post',
+		// 		'title'           => __( 'Event Single Block' ),
+		// 		'description'     => __( 'Select a single existing Event item (speaker, session, sponsor, exhibitor)' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-wrapper-event-single.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'index-card',
+		// 		'keywords'        => array( 'single post', 'event' ),
+		// 		'mode'            => 'peview',
+		// 	)
+		// );
 
 		// Event Embed
-		acf_register_block_type(
-			array(
-				'name'            => 'acfes_block_embed',
-				'title'           => __( 'Event Embed Block' ),
-				'description'     => __( 'Embed video content via a URL or iFrame' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-block-embed.php',
-				'category'        => 'acfes-event-blocks',
-				'icon'            => 'format-video',
-				'keywords'        => array( 'video', 'embed', 'event' ),
-				'mode'            => 'preview',
-			)
-		);
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_embed',
+		// 		'title'           => __( 'Event Embed Block' ),
+		// 		'description'     => __( 'Embed video content via a URL or iFrame' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-block-embed.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'format-video',
+		// 		'keywords'        => array( 'video', 'embed', 'event' ),
+		// 		'mode'            => 'preview',
+		// 	)
+		// );
 
 		// Event Countdown
-		acf_register_block_type(
-			array(
-				'name'            => 'acfes_block_countdown',
-				'title'           => __( 'Event Countdown Block' ),
-				'description'     => __( 'Countdown to the event and then display next session' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-block-countdown.php',
-				'category'        => 'acfes-event-blocks',
-				'icon'            => 'clock',
-				'keywords'        => array( 'countdown', 'event' ),
-				'mode'            => 'preview',
-			)
-		);
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_countdown',
+		// 		'title'           => __( 'Event Countdown Block' ),
+		// 		'description'     => __( 'Countdown to the event and then display next session' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-block-countdown.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'clock',
+		// 		'keywords'        => array( 'countdown', 'event' ),
+		// 		'mode'            => 'preview',
+		// 	)
+		// );
 
 		// Event Contact Info
-		acf_register_block_type(
-			array(
-				'name'            => 'acfes_block_meta',
-				'title'           => __( 'Exhibitor/Sponsor Contact Info' ),
-				'description'     => __( 'Show the additional information for this content (social, links, files, contact info, etc)' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-wrapper-event-meta.php',
-				'category'        => 'acfes-event-blocks',
-				'icon'            => 'info',
-				'keywords'        => array( 'meta', 'event' ),
-				'mode'            => 'edit',
-				'post_types'      => array( 'acfes_sponsor', 'acfes_exhibitor' ),
-			)
-		);
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_meta',
+		// 		'title'           => __( 'Exhibitor/Sponsor Contact Info' ),
+		// 		'description'     => __( 'Show the additional information for this content (social, links, files, contact info, etc)' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-wrapper-event-meta.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'info',
+		// 		'keywords'        => array( 'meta', 'event' ),
+		// 		'mode'            => 'edit',
+		// 		'post_types'      => array( 'acfes_sponsor', 'acfes_exhibitor' ),
+		// 	)
+		// );
 
 		// Event Speaker Contact Info
-		acf_register_block_type(
-			array(
-				'name'            => 'acfes_block_speaker_meta',
-				'title'           => __( 'Speaker Contact Info' ),
-				'description'     => __( 'Show the additional information for this speaker (social, links, etc)' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-wrapper-speaker-meta.php',
-				'category'        => 'acfes-event-blocks',
-				'icon'            => 'info',
-				'keywords'        => array( 'meta', 'event' ),
-				'mode'            => 'edit',
-				'post_types'      => array( 'acfes_speaker' ),
-			)
-		);
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_speaker_meta',
+		// 		'title'           => __( 'Speaker Contact Info' ),
+		// 		'description'     => __( 'Show the additional information for this speaker (social, links, etc)' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-wrapper-speaker-meta.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'info',
+		// 		'keywords'        => array( 'meta', 'event' ),
+		// 		'mode'            => 'edit',
+		// 		'post_types'      => array( 'acfes_speaker' ),
+		// 	)
+		// );
 
 		// Event Session Meta
-		acf_register_block_type(
-			array(
-				'name'            => 'acfes_block_session_meta',
-				'title'           => __( 'Session Info' ),
-				'description'     => __( 'Show the additional information for this session (time, tracks, speakers, location, etc)' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-wrapper-session-meta.php',
-				'category'        => 'acfes-event-blocks',
-				'icon'            => 'info',
-				'keywords'        => array( 'meta', 'event' ),
-				'mode'            => 'edit',
-				'post_types'      => array( 'acfes_session' ),
-			)
-		);
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_session_meta',
+		// 		'title'           => __( 'Session Info' ),
+		// 		'description'     => __( 'Show the additional information for this session (time, tracks, speakers, location, etc)' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-wrapper-session-meta.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'info',
+		// 		'keywords'        => array( 'meta', 'event' ),
+		// 		'mode'            => 'edit',
+		// 		'post_types'      => array( 'acfes_session' ),
+		// 	)
+		// );
 
 		// My Speakers
-		acf_register_block_type(
-			array(
-				'name'            => 'acfes_block_speaker_list',
-				'title'           => __( 'Show Speakers' ),
-				'description'     => __( 'Show a list of speakers associated with this content' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-block-my-speaker-list.php',
-				'category'        => 'acfes-event-blocks',
-				'icon'            => 'list-view',
-				'keywords'        => array( 'meta', 'event' ),
-				'mode'            => 'edit',
-				'post_types'      => array( 'acfes_session', 'acfes_sponsor', 'acfes_exhibitor' ),
-			)
-		);
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_speaker_list',
+		// 		'title'           => __( 'Show Speakers' ),
+		// 		'description'     => __( 'Show a list of speakers associated with this content' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-block-my-speaker-list.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'list-view',
+		// 		'keywords'        => array( 'meta', 'event' ),
+		// 		'mode'            => 'edit',
+		// 		'post_types'      => array( 'acfes_session', 'acfes_sponsor', 'acfes_exhibitor' ),
+		// 	)
+		// );
 
 		// My Sessions
-		acf_register_block_type(
-			array(
-				'name'            => 'acfes_block_session_list',
-				'title'           => __( 'Show Sessions' ),
-				'description'     => __( 'Show a list of sessions associated with this content' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-block-my-session-list.php',
-				'category'        => 'acfes-event-blocks',
-				'icon'            => 'list-view',
-				'keywords'        => array( 'meta', 'event' ),
-				'mode'            => 'edit',
-				'post_types'      => array( 'acfes_speaker', 'acfes_sponsor', 'acfes_exhibitor' ),
-			)
-		);
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_session_list',
+		// 		'title'           => __( 'Show Sessions' ),
+		// 		'description'     => __( 'Show a list of sessions associated with this content' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-block-my-session-list.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'list-view',
+		// 		'keywords'        => array( 'meta', 'event' ),
+		// 		'mode'            => 'edit',
+		// 		'post_types'      => array( 'acfes_speaker', 'acfes_sponsor', 'acfes_exhibitor' ),
+		// 	)
+		// );
 
 			// My Sponsors
-		acf_register_block_type(
-			array(
-				'name'            => 'acfes_block_sponsor_list',
-				'title'           => __( 'Show Sponsors' ),
-				'description'     => __( 'Show a list of sponsors associated with this content' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-block-my-sponsor-list.php',
-				'category'        => 'acfes-event-blocks',
-				'icon'            => 'list-view',
-				'keywords'        => array( 'meta', 'event' ),
-				'mode'            => 'edit',
-				'post_types'      => array( 'acfes_speaker', 'acfes_session', 'acfes_exhibitor' ),
-			)
-		);
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_sponsor_list',
+		// 		'title'           => __( 'Show Sponsors' ),
+		// 		'description'     => __( 'Show a list of sponsors associated with this content' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-block-my-sponsor-list.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'list-view',
+		// 		'keywords'        => array( 'meta', 'event' ),
+		// 		'mode'            => 'edit',
+		// 		'post_types'      => array( 'acfes_speaker', 'acfes_session', 'acfes_exhibitor' ),
+		// 	)
+		// );
 
 			// My Files
-		acf_register_block_type(
-			array(
-				'name'            => 'acfes_block_file_list',
-				'title'           => __( 'Show Downloads' ),
-				'description'     => __( 'Show downloads associated with this content' ),
-				'render_template' => ACFES_DIR . 'templates/acfes-block-my-file-list.php',
-				'category'        => 'acfes-event-blocks',
-				'icon'            => 'list-view',
-				'keywords'        => array( 'meta', 'event' ),
-				'mode'            => 'edit',
-				'post_types'      => array( 'acfes_session', 'acfes_sponsor', 'acfes_exhibitor' ),
-			)
-		);
+		// acf_register_block_type(
+		// 	array(
+		// 		'name'            => 'acfes_block_file_list',
+		// 		'title'           => __( 'Show Downloads' ),
+		// 		'description'     => __( 'Show downloads associated with this content' ),
+		// 		'render_template' => ACFES_DIR . 'templates/acfes-block-my-file-list.php',
+		// 		'category'        => 'acfes-event-blocks',
+		// 		'icon'            => 'list-view',
+		// 		'keywords'        => array( 'meta', 'event' ),
+		// 		'mode'            => 'edit',
+		// 		'post_types'      => array( 'acfes_session', 'acfes_sponsor', 'acfes_exhibitor' ),
+		// 	)
+		// );
 	}
 }

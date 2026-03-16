@@ -46,10 +46,10 @@
 			var speaker_link = props.attributes.speaker_link;
 
 			return [
-				el(ServerSideRender, {
-					block: "acfes/schedule-block",
-					attributes: props.attributes,
-				}),
+				// el(ServerSideRender, {
+				// 	block: "acfes/schedule-block",
+				// 	attributes: props.attributes,
+				// }),
 				el(
 					InspectorControls,
 					{},
@@ -59,17 +59,6 @@
 						selected: date,
 						onChange: function (value) {
 							setAttributes({ date: acfes_dateFormatted(value) });
-						},
-					}),
-					el(SelectControl, {
-						label: "Color Scheme",
-						value: color_scheme,
-						options: [
-							{ value: "light", label: "Light" },
-							{ value: "dark", label: "Dark" },
-						],
-						onChange: function (value) {
-							setAttributes({ color_scheme: value });
 						},
 					}),
 					el(SelectControl, {
