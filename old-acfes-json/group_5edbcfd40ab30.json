@@ -96,9 +96,9 @@
             },
             "choices": {
                 "session": "Regular Session",
-                "mainstage": "Mainstage\/Keynote Session",
+                "keynote": "Mainstage\/Keynote Session",
                 "special": "Special\/Highlighted Session",
-                "custom": "Break, Lunch (No Link)"
+                "break": "Break, Lunch (No Link)"
             },
             "default_value": "session",
             "allow_null": 0,
@@ -125,7 +125,7 @@
                     {
                         "field": "field_5edbd3e96adb7",
                         "operator": "==",
-                        "value": "custom"
+                        "value": "break"
                     }
                 ]
             ],
