@@ -138,7 +138,7 @@ class ACF_Event_Schedule_Plugin {
 			'end'      => get_option( 'acfes_countdown_end_time' ),
 			'timezone' => get_option( 'timezone_string' ),
 		);
-		wp_enqueue_style( 'acfes-styles', plugins_url( '/assets/css/acfes-style.css', __FILE__ ), array(), 2 );
+		wp_enqueue_style( 'acfes-styles', plugins_url( '/assets/css/acfes-style.css', __FILE__ ), array(), 3 );
 		wp_enqueue_script( 'acfes-moment', plugin_dir_url( __FILE__ ) . 'assets/js/moment.js', array(), 1, true );
 		wp_enqueue_script( 'acfes-moment-data', plugin_dir_url( __FILE__ ) . 'assets/js/moment-timezone-with-data.js', array( 'acfes-moment' ), 1, true );
 		wp_enqueue_script( 'countdown', plugin_dir_url( __FILE__ ) . 'assets/js/countdown.js', array(), 1, true );
