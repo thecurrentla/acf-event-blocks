@@ -45,8 +45,38 @@
 		font-size: 0.8em;
 		line-height: 1;
 
-		background-color: var(--color-gray-100);
-		border-color: var(--color-gray-300);
+		--card-background-color: var(--color-gray-100);
+		--card-border-color: var(--color-gray-300);
+
+		color: var(--card-text-color);
+		border-color: var(--card-border-color);
+		background-color: var(--card-background-color);
+
+		&:has(a) {
+			a {
+				text-decoration: none;
+			}
+
+			transition-property:
+				opacity, transform, scale, translate, rotate, color, background-color,
+				border-color, outline-color, text-decoration-color, box-shadow,
+				text-shadow, background-size, filter, outline-offset;
+			transition-duration: 150ms;
+			transition-timing-function: ease;
+
+			&:hover,
+			&:focus-within {
+				color: var(--card-text-color--shifted, var(--card-text-color));
+				border-color: var(
+					--card-border-color--shifted,
+					var(--card-border-color)
+				);
+				background-color: var(
+					--card-background-color--shifted,
+					var(--card-background-color)
+				);
+			}
+		}
 	}
 
 	@supports (display: grid) {
@@ -62,30 +92,36 @@
 	.acfes-event-card.acfes-session-type-keynote {
 	}
 	.acfes-event-card.acfes-session-type-special {
-		background-color: var(--color-yellow-300);
-		border-color: var(--color-yellow-500);
+		--card-background-color: var(--color-yellow-200);
+		--card-background-color--shifted: var(--color-yellow-300);
+		--card-border-color: var(--color-yellow-500);
 	}
 
 	.acfes-event-card.acfes-track-civics-media {
-		background-color: var(--color-red-300);
-		border-color: var(--color-red-500);
+		--card-background-color: var(--color-red-200);
+		--card-background-color--shifted: var(--color-red-300);
+		--card-border-color: var(--color-red-500);
 	}
 	.acfes-event-card.acfes-track-community-culture {
-		background-color: var(--color-orange-300);
-		border-color: var(--color-orange-500);
+		--card-background-color: var(--color-orange-200);
+		--card-background-color--shifted: var(--color-orange-300);
+		--card-border-color: var(--color-orange-500);
 	}
 	.acfes-event-card.acfes-track-health-healthcare {
-		background-color: var(--color-green-300);
-		border-color: var(--color-green-500);
+		--card-background-color: var(--color-green-200);
+		--card-background-color--shifted: var(--color-green-300);
+		--card-border-color: var(--color-green-500);
 	}
 	.acfes-event-card.acfes-track-growth-economy {
-		background-color: var(--color-blue-300);
-		border-color: var(--color-blue-500);
+		--card-background-color: var(--color-blue-200);
+		--card-background-color--shifted: var(--color-blue-300);
+		--card-border-color: var(--color-blue-500);
 	}
 
 	.acfes-event-card.acfes-session-type-keynote {
-		background-color: var(--color-yellow-300);
-		border-color: var(--color-yellow-500);
+		--card-background-color: var(--color-yellow-200);
+		--card-background-color--shifted: var(--color-yellow-300);
+		--card-border-color: var(--color-yellow-500);
 
 		.acfes-session-track {
 			font-size: var(--font-size-sm);
@@ -100,7 +136,7 @@
 
 	.acfes-event-card[class*="acfes-session-break "],
 	.acfes-event-card[class*="acfes-session-break-"] {
-		color: var(--color-gray-700);
+		--card-text-color: var(--color-gray-700);
 
 		.acfes-session-title {
 			font-size: var(--font-size-xs);

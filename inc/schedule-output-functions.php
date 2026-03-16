@@ -625,9 +625,9 @@ function acfes_schedule_output( $props ) {
 
 				// Determine the session title
 				if ( 'permalink' === $attr['session_link'] && ( 'custom' !== $session_type ) ) {
-					$session_title_html = sprintf( '<strong class=""><a class="acfes-session-title" href="%s">%s</a></strong>', esc_url( get_permalink( $session->ID ) ), $session_title );
+					$session_title_html = sprintf( '<strong class=""><a class="acfes-session-title is-layout-stretched-link" href="%s">%s</a></strong>', esc_url( get_permalink( $session->ID ) ), $session_title );
 				} elseif ( 'anchor' === $attr['session_link'] && ( 'custom' !== $session_type ) ) {
-					$session_title_html = sprintf( '<strong class=""><a class="acfes-session-title" href="%s">%s</a></strong>', esc_url( '#' . get_post_field( 'post_name', $session->ID ) ), $session_title );
+					$session_title_html = sprintf( '<strong class=""><a class="acfes-session-title is-layout-stretched-link" href="%s">%s</a></strong>', esc_url( '#' . get_post_field( 'post_name', $session->ID ) ), $session_title );
 				} else {
 					$session_title_html = sprintf( '<strong class=""><span class="acfes-session-title">%s</span></strong>', $session_title );
 				}
@@ -697,7 +697,7 @@ function acfes_schedule_block_render ( $block, $content, $is_preview, $post_id, 
 		$props = [
 				"date" => $date,
 				"schedule_layout" => get_field( "layout" ),
-				"session_link" => "none",
+				"session_link" => "permalink",
 				"speaker_link" => "none",
 		];
 
