@@ -61,22 +61,6 @@ class ACF_Event_Schedule_Plugin {
 		// add_action( 'plugins_loaded', array( 'Acfes_Block_Templates', 'get_instance' ) );
 		add_action( 'acf/init', 'register_acfes_block_types' );
 
-		// register_block_type(
-		// 	'acfes/schedule-block',
-		// 	array(
-		// 		'editor_script'   => 'schedule-block',
-		// 		'attributes'      => array(
-		// 			'date'            => array( 'type' => 'string' ),
-		// 			'color_scheme'    => array( 'type' => 'string' ),
-		// 			'session_link'    => array( 'type' => 'string' ),
-		// 			'speaker_link'    => array( 'type' => 'string' ),
-		// 			'schedule_layout' => array( 'type' => 'string' ),
-		// 			'align'           => array( 'type' => 'string' ),
-		// 		),
-		// 		'render_callback' => array( $this, 'acfes_schedule_block_output' ),
-		// 	),
-		// );
-
 		add_filter( 'manage_acfes_session_posts_columns', array( $this, 'acfes_manage_post_types_columns' ) );
 		add_filter( 'manage_edit-acfes_session_sortable_columns', array( $this, 'acfes_manage_sortable_columns' ) );
 		add_filter( 'display_post_states', array( $this, 'acfes_display_post_states' ) );
@@ -114,7 +98,7 @@ class ACF_Event_Schedule_Plugin {
 		// Enqueues scripts and styles for session admin page
 		if ( 'acfes_session' === $acfes_post_type ) {
 			wp_enqueue_script( 'jquery-ui-datepicker' );
-			wp_register_style( 'jquery-ui', plugins_url( '/assets/css/jquery-ui.css', __FILE__ ), array(), filemtime() );
+			wp_register_style( 'jquery-ui', plugin_dir_url( __FILE__ ) . 'assets/css/jquery-ui.css', array("jquery"), filemtime( plugin_dir_path(__FILE__) . 'assets/css/jquery-ui.css' ) );
 			wp_enqueue_style( 'jquery-ui' );
 		}
 	}
@@ -126,7 +110,6 @@ class ACF_Event_Schedule_Plugin {
 	**/
 	public function acfes_add_block_editor_assets() {
 		wp_enqueue_style( 'acfes-editor', plugins_url( '/assets/css/acfes-editor-style.css', __FILE__ ), array(), 1 );
-		// wp_enqueue_script( 'schedule-block', plugin_dir_url( __FILE__ ) . 'assets/js/schedule-block.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor' ), 1, true );
 	}
 
 	/**
@@ -138,10 +121,10 @@ class ACF_Event_Schedule_Plugin {
 			'end'      => get_option( 'acfes_countdown_end_time' ),
 			'timezone' => get_option( 'timezone_string' ),
 		);
-		wp_enqueue_style( 'acfes-styles', plugins_url( '/assets/css/acfes-style.css', __FILE__ ), array(), 3 );
-		wp_enqueue_script( 'acfes-moment', plugin_dir_url( __FILE__ ) . 'assets/js/moment.js', array(), 1, true );
-		wp_enqueue_script( 'acfes-moment-data', plugin_dir_url( __FILE__ ) . 'assets/js/moment-timezone-with-data.js', array( 'acfes-moment' ), 1, true );
-		wp_enqueue_script( 'countdown', plugin_dir_url( __FILE__ ) . 'assets/js/countdown.js', array(), 1, true );
+		wp_enqueue_style( 'acfes-styles', plugin_dir_url( __FILE__ ) . 'assets/css/acfes-style.css', array(), filemtime( plugin_dir_path(__FILE__) . 'assets/css/acfes-style.css' ) );
+		wp_register_script( 'acfes-moment', plugin_dir_url( __FILE__ ) . 'assets/js/moment.js', array(), filemtime( plugin_dir_path(__FILE__) . 'assets/js/moment.js' ), true );
+		wp_register_script( 'acfes-moment-data', plugin_dir_url( __FILE__ ) . 'assets/js/moment-timezone-with-data.js', array( 'acfes-moment' ), filemtime( plugin_dir_path(__FILE__) . 'assets/js/moment-timezone-with-data.js' ), true );
+		wp_register_script( 'countdown', plugin_dir_url( __FILE__ ) . 'assets/js/countdown.js', array( 'acfes-moment', 'acfes-moment-data' ), filemtime( plugin_dir_path(__FILE__) . 'assets/js/countdown.js' ), true );
 		wp_localize_script( 'countdown', 'countdownOptions', $mtm_countdown_options );
 	}
 
@@ -151,7 +134,7 @@ class ACF_Event_Schedule_Plugin {
 	 * @uses wp_enqueue_style()
 	 */
 	public function acfes_admin_css() {
-		wp_enqueue_style( 'acfes-admin', plugins_url( '/assets/css/acfes-admin-style.css', __FILE__ ), array(), 1 );
+		wp_enqueue_style( 'acfes-admin', plugin_dir_url( __FILE__ ) . 'assets/css/acfes-admin-style.css', array(), filemtime( plugin_dir_path(__FILE__) . 'assets/css/acfes-admin-style.css' ) );
 	}
 
 	/**

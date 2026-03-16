@@ -7,6 +7,8 @@ if ( ! empty( $block['align'] ) ) {
 	$class_name .= ' align' . $block['align'];
 }
 
+wp_enqueue_script("countdown");
+
 $showlive        = _get_field( 'acfes_show_live_event' ) ? true : false;
 $countdown_start = get_option( 'acfes_countdown_date' ) ? get_option( 'acfes_countdown_date' ) : current_time( 'Y-m-d H:i:s' );
 $countdown_end   = get_option( 'acfes_countdown_end_time' ) ? get_option( 'acfes_countdown_end_time' ) : current_time( 'Y-m-d H:i:s' );
