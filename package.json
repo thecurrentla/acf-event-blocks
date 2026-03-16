@@ -1,0 +1,30 @@
+{
+	"name": "acf-event-blocks",
+	"version": "2.0.0",
+	"description": "Conference schedule event blocks for WordPress and Advanced Custom Fields - Fully responsive blocks for adding sessions, speakers, sponsors, exhibitors - Support for https://wordpress.org/plugins/favorites/ in sessions",
+	"homepage": "https://github.com/thecurrentla/acf-event-blocks#readme",
+	"bugs": {
+		"url": "https://github.com/thecurrentla/acf-event-blocks/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://cbirdsong@github.com/thecurrentla/acf-event-blocks.git"
+	},
+	"license": "GPL-3.0",
+	"author": "",
+	"type": "commonjs",
+	"main": "index.js",
+	"scripts": {
+		"setup": "(npm install); (npx update-browserslist-db@latest);",
+		"start": "npm run watch",
+		"format": "npx prettier ./src/**/* --write",
+		"clean": "git clean -d -X -f",
+		"watch": "npm run watch:sass",
+		"build": "npm run  build:sass",
+		"watch:sass": "sass --update --quiet-deps --silence-deprecation=import --silence-deprecation=global-builtin --load-path=node_modules --watch assets/scss:assets/css --style=expanded",
+		"build:sass": "sass --quiet-deps --silence-deprecation=import --silence-deprecation=global-builtin --no-error-css --embed-sources --load-path=node_modules assets/scss:assets/css --no-error-css --style=compressed"
+	},
+	"devDependencies": {
+		"sass": "^1.98.0"
+	}
+}
