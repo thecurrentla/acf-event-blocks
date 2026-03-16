@@ -185,6 +185,7 @@ class ACF_Event_Schedule_Plugin {
 
 			case 'conference_session_time':
 				$session_time = strtotime( get_field( 'acfes_session_time', $post_id ) );
+				do_action("qm/debug", $session_time);
 				$session_time = ( $session_time ) ? gmdate( get_option( 'time_format' ), $session_time ) : '&mdash;';
 				echo esc_html( $session_time );
 				break;

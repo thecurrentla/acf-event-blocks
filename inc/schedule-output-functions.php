@@ -653,6 +653,8 @@ function acfes_schedule_output( $props ) {
 				$acfes_session_content_footer = apply_filters( 'acfes_session_content_footer', $session->ID );
 				$content                     .= ( $acfes_session_content_footer !== $session->ID ) ? $acfes_session_content_footer : '';
 
+				$content                     .= ( $acfes_session_content_footer !== $session->ID ) ? $acfes_session_content_footer : '';
+
 				// End of cell-content.
 				$content .= '</div>';
 

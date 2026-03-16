@@ -73,23 +73,23 @@ function acfes_register_taxonomies() {
 		// Register Track taxonomy to whichever post types are in the array
 		register_taxonomy( 'acfes_track', array( 'acfes_session' ), $track_args );
 
-		// Add new Session Category taxonomy, make it hierarchical (like categories)
+		// Add new Sponsor taxonomy, make it hierarchical (like categories)
 		$track_labels = array(
-			'name'                       => _x( 'Session Category', 'taxonomy general name' ),
-			'singular_name'              => _x( 'Category', 'taxonomy singular name' ),
-			'search_items'               => __( 'Search Categories' ),
-			'all_items'                  => __( 'All Categories' ),
-			'parent_item'                => __( 'Parent Category' ),
-			'parent_item_colon'          => __( 'Parent Category:' ),
-			'edit_item'                  => __( 'Edit Category' ),
-			'update_item'                => __( 'Update Category' ),
-			'add_new_item'               => __( 'Add New Category' ),
-			'new_item_name'              => __( 'New Category Name' ),
-			'menu_name'                  => __( 'Categories' ),
-			'separate_items_with_commas' => __( 'Separate Categories with commas' ),
-			'add_or_remove_items'        => __( 'Add or remove Categories' ),
-			'choose_from_most_used'      => __( 'Choose from the most used Categories' ),
-			'not_found'                  => __( 'No Categories found.' ),
+			'name'                       => _x( 'Sponsor', 'taxonomy general name' ),
+			'singular_name'              => _x( 'Sponsor', 'taxonomy singular name' ),
+			'search_items'               => __( 'Search Sponsors' ),
+			'all_items'                  => __( 'All Sponsors' ),
+			'parent_item'                => __( 'Parent Sponsor' ),
+			'parent_item_colon'          => __( 'Parent Sponsor:' ),
+			'edit_item'                  => __( 'Edit Sponsor' ),
+			'update_item'                => __( 'Update Sponsor' ),
+			'add_new_item'               => __( 'Add New Sponsor' ),
+			'new_item_name'              => __( 'New Sponsor Name' ),
+			'menu_name'                  => __( 'Sponsors' ),
+			'separate_items_with_commas' => __( 'Separate Sponsors with commas' ),
+			'add_or_remove_items'        => __( 'Add or remove Sponsors' ),
+			'choose_from_most_used'      => __( 'Choose from the most used Sponsors' ),
+			'not_found'                  => __( 'No Sponsors found.' ),
 		);
 
 		$track_args = array(
@@ -101,12 +101,12 @@ function acfes_register_taxonomies() {
 			'show_in_nav_menus' => true,
 			'query_var'         => true,
 			'show_in_rest'      => true,
-			'rest_base'         => 'session_category',
-			'rewrite'           => array( 'slug' => 'session-category' ),
+			'rest_base'         => 'sponsor',
+			'rewrite'           => array( 'slug' => 'sponsor' ),
 		);
 
 		// Register Session Category taxonomy to whichever post types are in the array
-		register_taxonomy( 'acfes_session_category', array( 'acfes_session' ), $track_args );
+		register_taxonomy( 'acfes_sponsor', array( 'acfes_sponsor' ), $track_args );
 
 		// Add new Speaker Category taxonomy, make it hierarchical (like categories)
 		$speaker_labels = array(
@@ -141,7 +141,7 @@ function acfes_register_taxonomies() {
 		);
 
 		// Register Speaker Category taxonomy to whichever post types are in the array
-		register_taxonomy( 'acfes_speaker_category', array( 'acfes_speaker' ), $speaker_args );
+		// register_taxonomy( 'acfes_speaker_category', array( 'acfes_speaker' ), $speaker_args );
 
 		// Add new Level taxonomy, make it hierarchical (like categories)
 		$level_labels = array(
@@ -176,7 +176,7 @@ function acfes_register_taxonomies() {
 		);
 
 		// Register Level taxonomy to whichever post types are in the array
-		register_taxonomy( 'acfes_level', array( 'acfes_sponsor' ), $level_args );
+		// register_taxonomy( 'acfes_level', array( 'acfes_sponsor' ), $level_args );
 
 		// Add new Level taxonomy, make it hierarchical (like categories)
 		$sponsor_category_labels = array(
@@ -211,7 +211,7 @@ function acfes_register_taxonomies() {
 		);
 
 		// Register Level taxonomy to whichever post types are in the array
-		register_taxonomy( 'acfes_sponsor_category', array( 'acfes_sponsor' ), $sponsor_category_args );
+		// register_taxonomy( 'acfes_sponsor_category', array( 'acfes_sponsor' ), $sponsor_category_args );
 
 		// Add new Exhibitor Category taxonomy, make it hierarchical (like categories)
 		$exhibitor_category_labels = array(
@@ -246,7 +246,7 @@ function acfes_register_taxonomies() {
 		);
 
 		// Register Level taxonomy to whichever post types are in the array
-		register_taxonomy( 'acfes_exhibitor_category', array( 'acfes_exhibitor' ), $exhibitor_category_args );
+		// register_taxonomy( 'acfes_exhibitor_category', array( 'acfes_exhibitor' ), $exhibitor_category_args );
 
 }
 
