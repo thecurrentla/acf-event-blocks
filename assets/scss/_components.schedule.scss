@@ -108,8 +108,6 @@
 	}
 
 	.acfes-event-card.acfes-session-type-break {
-		--card-text-color: var(--color-gray-700);
-
 		.acfes-session-title {
 			font-size: var(--font-size-xs);
 			font-weight: 600;
@@ -178,12 +176,6 @@
 	.acfes-event-card {
 		grid-row: var(--acfes-grid-row);
 		grid-column: var(--acfes-grid-column);
-	}
-
-	.acfes-event-card.acfes-session-type-keynote {
-	}
-	.acfes-event-card.acfes-session-type-break {
-		// z-index: 3;
 	}
 }
 
