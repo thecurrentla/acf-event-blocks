@@ -88,16 +88,15 @@ function acfes_register_post_types() {
 
 		$speakerargs = array(
 			'labels'              => $speakerlabels,
-			'public'              => false, // bool (default is FALSE)
+			'public'              => true, // bool (default is FALSE)
 			'publicly_queryable'  => true, // bool (defaults to 'public')
 			'exclude_from_search' => true, // bool (defaults to 'public')
 			'show_ui'             => true, // bool (defaults to 'public')
 			'show_in_menu'        => true, // bool (defaults to 'show_ui')
-			'show_in_nav_menus'   => false, // bool (defaults to 'public')
-			'show_in_admin_bar'   => false, // bool (defaults to 'show_in_menu')
+			'show_in_nav_menus'   => true, // bool (defaults to 'public')
+			'show_in_admin_bar'   => true, // bool (defaults to 'show_in_menu')
 			'show_in_rest'        => true, // bool (for gutenberg support)
-			'query_var'           => false, // bool|string (defaults to TRUE - post type name)
-			'rewrite'             => false, // true/false whether to append slug to url i.e. /blog/blog-post
+			'rewrite'             => ['slug' => 'speakers'], // true/false whether to append slug to url i.e. /blog/blog-post
 			'capability_type'     => 'acfes_speaker',
 			'capabilities'        => array(
 				'publish_posts'      => 'publish_acfes_speakers',
