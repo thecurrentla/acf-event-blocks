@@ -86,9 +86,13 @@ class ACF_Event_Schedule_Plugin {
 
 		$current_screen = get_current_screen();
 
+		if ( 'edit-acfes_session' !== $current_screen->id )  {
+			return;
+		}
+
 		// Order by session time
-		if ( 'edit-acfes_session' === $current_screen->id && $query->get( 'orderby' ) === '_acfes_session_time' ) {
-			$query->set( 'meta_key', '_acfes_session_time' );
+		if ( $query->get( 'orderby' ) === 'session_datetime' ) {
+			$query->set( 'meta_key', 'acfes_session_time' );
 			$query->set( 'orderby', 'meta_value_num' );
 		}
 	}
@@ -168,9 +172,11 @@ class ACF_Event_Schedule_Plugin {
 		switch ( $column ) {
 
 			case 'conference_session_time':
-				$session_time = strtotime( get_field( 'acfes_session_time', $post_id ) );
+				$session_datetime = strtotime( get_field( 'acfes_session_time', $post_id ) );
 				// do_action("qm/debug", $session_time);
-				$session_time = ( $session_time ) ? gmdate( get_option( 'time_format' ), $session_time ) : '&mdash;';
+				$session_date = ( $session_datetime ) ? gmdate( "M j", $session_datetime ) : '&mdash;';
+				$session_time = ( $session_datetime ) ? gmdate( "g:i a", $session_datetime ) : '&mdash;';
+				echo esc_html( $session_date ) . "<br>";
 				echo esc_html( $session_time );
 				break;
 
@@ -185,7 +191,9 @@ class ACF_Event_Schedule_Plugin {
 		$current_filter = current_filter();
 
 		if ( 'manage_edit-acfes_session_sortable_columns' === $current_filter ) {
-			$sortable['conference_session_time'] = '_acfes_session_time';
+			$sortable['conference_session_time'] = 'session_datetime';
+			do_action("qm/debug", $current_filter);
+			do_action("qm/debug", $sortable);
 		}
 
 		return $sortable;
