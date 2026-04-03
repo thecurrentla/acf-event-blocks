@@ -64,6 +64,7 @@ class ACF_Event_Schedule_Plugin {
 		add_filter( 'manage_acfes_session_posts_columns', array( $this, 'acfes_manage_post_types_columns' ) );
 		add_filter( 'manage_edit-acfes_session_sortable_columns', array( $this, 'acfes_manage_sortable_columns' ) );
 		add_filter( 'display_post_states', array( $this, 'acfes_display_post_states' ) );
+		add_filter( 'display_post_states', array( $this, 'acfes_display_speaker_info' ) );
 	}
 
 	/**
@@ -168,7 +169,7 @@ class ACF_Event_Schedule_Plugin {
 
 			case 'conference_session_time':
 				$session_time = strtotime( get_field( 'acfes_session_time', $post_id ) );
-				do_action("qm/debug", $session_time);
+				// do_action("qm/debug", $session_time);
 				$session_time = ( $session_time ) ? gmdate( get_option( 'time_format' ), $session_time ) : '&mdash;';
 				echo esc_html( $session_time );
 				break;
@@ -213,6 +214,43 @@ class ACF_Event_Schedule_Plugin {
 			$states['acfes-session-type'] = __( 'Keynote', 'acf-event-schedule' );
 		} elseif ( 'special' === $session_type ) {
 			$states['acfes-session-type'] = __( 'Special', 'acf-event-schedule' );
+		}
+
+		return $states;
+	}
+
+	/**
+	 * Display an additional post label if needed.
+	 */
+	public function acfes_display_speaker_info( $states ) {
+		$post = get_post();
+
+		if ( 'acfes_speaker' !== $post->post_type ) {
+			return $states;
+		}
+
+		if ( 
+				array_key_exists( "draft", $states) || 
+				array_key_exists( "pending", $states) || 
+				array_key_exists( "private", $states) 
+			) {
+			return $states;
+		}
+
+		$title = get_field("title");
+		$organization = get_field("organization");
+
+		if ($title && $organization) {
+			$info = $title .  ", " . $organization;
+		} elseif ($title) {
+			$info = $title;
+		} elseif ($organization) {
+			$info = $organization;
+		}
+
+		if (!empty($info)) {
+			// $states['acfes-speaker-info'] = "(<em>" . $info . "</em>)";
+			$states['acfes-speaker-info'] = $info;
 		}
 
 		return $states;
