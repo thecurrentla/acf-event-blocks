@@ -2,14 +2,18 @@
 
 /* GRID LAYOUT */
 .acfes-layout-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: var(--acfes-grid-template-rows);
 	@media screen and (min-width: $med-bp) {
-		display: grid;
-		// grid-column-gap: 1rem;
+		grid-template-columns: var(--acfes-grid-template-columns);
+		--acfes-schedule-row-height: 3px;
 	}
 
 	// Stuff only visible on desktop:
 	.acfes-time,
 	.acfes-time-line,
+	.acfes-time-current,
 	.acfes-col-location {
 		display: none;
 		@media screen and (min-width: $med-bp) {
@@ -17,6 +21,8 @@
 		}
 	}
 	// Stuff only visible on mobile:
+	// .acfes-session-current,
+	// .acfes-session-track,
 	.acfes-session-location {
 		display: block;
 		@media screen and (min-width: $med-bp) {
@@ -31,7 +37,7 @@
 	}
 	.acfes-session-track {
 		font-size: var(--font-size-2xs);
-		font-weight: 600;
+		font-weight: 900;
 	}
 	.acfes-session-location {
 	}
@@ -47,7 +53,10 @@
 		position: relative;
 		z-index: 5;
 		margin: 2px;
-		padding: 0.5rem;
+		padding: 0.33rem;
+		@media screen and (min-width: $lg-bp) {
+			padding: 0.4rem;
+		}
 
 		overflow: clip;
 
@@ -99,20 +108,12 @@
 		}
 	}
 
-	@supports (display: grid) {
-		@media screen and (min-width: $med-bp) {
-			.acfes-event-card {
-				// margin: 0;
-			}
-		}
-	}
-
 	.acfes-event-card.acfes-session-type-keynote {
 		.acfes-session-track {
-			font-size: var(--font-size-sm);
+			font-size: var(--font-size-xs);
 		}
 		.acfes-session-title {
-			font-size: var(--font-size-lg);
+			font-size: var(--font-size-md);
 		}
 	}
 
@@ -140,24 +141,61 @@
 	}
 
 	.acfes-time {
-		grid-column: times;
-		grid-row: var(--acfes-grid-row);
+		@media screen and (min-width: $med-bp) {
+			grid-column: times;
+			grid-row: var(--acfes-grid-row);
+		}
+
 		background-color: transparent;
 		margin-block: 0;
 		font-size: 1em;
-		font-weight: bold;
+		font-weight: 500;
 		font-size: var(--font-size-2xs);
 		text-align: right;
-		padding-right: 0.5rem;
+		padding-right: 0.33rem;
+		line-height: 0;
+		color: var(--color-gray-700);
 	}
 	.acfes-time-line {
-		grid-row: var(--acfes-grid-row);
-		grid-column: 2 / -1;
+		@media screen and (min-width: $med-bp) {
+			grid-row: var(--acfes-grid-row);
+			grid-column: 2 / -1;
+		}
+
 		width: 100%;
 		margin: 0;
 		z-index: 0;
-		background-color: var(--color-gray-300);
+		background-color: var(--color-gray-400);
 		height: 1px;
+	}
+
+	.acfes-time-current {
+		@media screen and (min-width: $med-bp) {
+			grid-column: 2 / -1;
+		}
+		grid-row: var(--acfes-grid-row);
+
+		width: 100%;
+		margin: 0;
+		z-index: 0;
+		height: 1px;
+
+		background-color: var(--color-gray-900);
+		box-shadow: 0 0 2px var(--color-yellow-base);
+		text-shadow: 0 0 2px var(--color-yellow-base);
+		position: relative;
+
+		> span {
+			position: absolute;
+			left: 100%;
+			padding-left: 0.33rem;
+
+			color: var(--color-gray-900);
+			font-size: 1em;
+			line-height: 0;
+			font-weight: 500;
+			font-size: var(--font-size-2xs);
+		}
 	}
 
 	.acfes-col-location {
@@ -183,8 +221,18 @@
 	}
 
 	.acfes-event-card {
-		grid-row: var(--acfes-grid-row);
-		grid-column: var(--acfes-grid-column);
+		@media screen and (min-width: $med-bp) {
+			grid-row-start: var(--acfes-grid-row-start, var(--acfes-grid-row, auto));
+			grid-row-end: var(--acfes-grid-row-end, var(--acfes-grid-row, auto));
+			grid-column-start: var(
+				--acfes-grid-column-start,
+				var(--acfes-grid-column, auto)
+			);
+			grid-column-end: var(
+				--acfes-grid-column-end,
+				var(--acfes-grid-column, auto)
+			);
+		}
 	}
 }
 

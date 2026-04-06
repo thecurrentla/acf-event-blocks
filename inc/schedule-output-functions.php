@@ -292,23 +292,21 @@ function acfes_schedule_output( $props ) {
 
 		// Get all the Unix times from sessions
 		foreach ( $sessions_query->posts as $session ) {
-			$time        = strtotime( get_field( 'acfes_session_time', $session->ID ) );
+			$start_time        = strtotime( get_field( 'acfes_session_time', $session->ID ) );
 			$end_time    = strtotime( get_field( 'acfes_session_end_time', $session->ID ) );
-			$acfes_terms = get_the_terms( $session->ID, 'acfes_track' );
 
 			if ( ! in_array( $end_time, $session_times, true ) ) {
 				array_push( $session_times, $end_time );
 			}
 
-			if ( ! in_array( $time, $session_times, true ) ) {
-				array_push( $session_times, $time );
+			if ( ! in_array( $start_time, $session_times, true ) ) {
+				array_push( $session_times, $start_time );
 			}
 		}
 		asort( $session_times );
+		
 		// Reset PHP Array Index
 		$session_times = array_values( $session_times );
-		// Remove last time item
-		unset( $session_times[ count( $session_times ) - 1 ] );
 
 
 		// Figure out the start and end of the day
@@ -317,40 +315,46 @@ function acfes_schedule_output( $props ) {
 		$length_of_day = $end_time - $start_time;
 
 		// Now get times for every 15 minutes for the length of the entire day
-		$interval_times = array();
-		for ( $i = $start_time; $i < ($end_time + 900); ) {
-			$interval_times[] = $i;
-			$i = $i + 900; // 900 = 15 minutes
+		$interval_times_15m = array();
+		$interval_amount_15m = 900; // 15 minutes
+		for ( $i = $start_time; $i < ($end_time + $interval_amount_15m); ) {
+			$interval_times_15m[] = $i;
+			$i = $i + $interval_amount_15m; 
 		}
-
-		$interval_times = array_unique($interval_times);
-		sort($interval_times);
-
+		$interval_times_15m = array_unique($interval_times_15m);
+		sort($interval_times_15m);
+		
+		$interval_times_1m = array();
+		$interval_amount_1m = 60; // 15 minutes
+		for ( $i = $start_time; $i < ($end_time + $interval_amount_1m); ) {
+			$interval_times_1m[] = $i;
+			$i = $i + $interval_amount_1m; 
+		}
+		$interval_times_1m = array_unique($interval_times_1m);
+		sort($interval_times_1m);
 
 
 		// echo "<table>";
 		// 	echo "<thead>";
-		// 		echo "<tr><th>Unix Time</th><th>Normal Time</th></tr>";
+		// 		echo "<tr><th>Unix Time</th><th>Sorted Time</th><th>Normal Time</th></tr>";
 		// 	echo "</thead>";
 		// 	echo "<tbody>";
-		// 	foreach ( $interval_times as $array_time ) {
-		// 		echo "<tr><td>" . $array_time . "</td><td>" . date("r", $array_time) . "</td></tr>";
+		// 	foreach ( $interval_times_15m as $epoch_time ) {
+		// 		echo "<tr><td>" . $epoch_time . "</td><td>" . date("Ymd", $epoch_time) . "</td><td>" . date("r", $epoch_time) . "</td></tr>";
 		// 	}
 		// 	echo "</tbody>";
 		// echo "</table>";
 
 
 		$html = '<style>
-		.acfes-layout-grid.grid-' . $rand . ' {
-			grid-template-rows: [locations] auto';
+		.acfes-layout-grid.grid-' . $rand . ' {';
 
-			foreach ( $interval_times as $array_time ) {
-				$html .= '[time-' . $array_time . '] var(--acfes-schedule-row-height, 50px)';
+		$html .= '--acfes-grid-template-rows: [locations] auto';
+			foreach ( $interval_times_1m as $epoch_time ) {
+				$html .= '[time-' . $epoch_time . '] var(--acfes-schedule-row-height, auto)';
 			}
-
 		$html .= ';';
 
-		$html .= 'grid-template-columns: [times] max-content';
 
 		// Reset PHP Array Index
 		$total_locations = array_values( $locations );
@@ -365,7 +369,8 @@ function acfes_schedule_output( $props ) {
 
 		$len = count( $locations );
 
-		// Check the above var dump for issue
+		$html .= '--acfes-grid-template-columns: [times] max-content';
+
 		for ( $i = 0; $i < ( $len ); $i++ ) {
 			if ( 0 === $i ) {
 				$html .= ' [' . $locations[ $i ]->slug . '-start] var(--acfes-schedule-column-width, 1fr)';
@@ -390,7 +395,7 @@ function acfes_schedule_output( $props ) {
 		if ( $locations ) {
 			foreach ( $locations as $location ) {
 				$html .= sprintf(
-					'<div class="acfes-col-location" style="--acfes-grid-column: ' . $location->slug . '; grid-row: locations;"> 
+					'<div class="acfes-col-location" style="--acfes-grid-column: ' . $location->slug . '; --acfes-grid-row: locations;"> 
 						<p class="acfes-location-name">%s</p> <p class="acfes-location-description">%s</p> </div>',
 					isset( $location->term_id ) ? esc_html( $location->name ) : '',
 					isset( $location->term_id ) ? esc_html( $location->description ) : ''
@@ -405,6 +410,18 @@ function acfes_schedule_output( $props ) {
 			}
 		}
 
+
+		// Get the current time, then round to the nearest minute and show a line
+		$current_datetime_precise = new DateTimeImmutable();
+		// $current_datetime_precise = new DateTimeImmutable('2026-04-22 09:02:53'); for testing
+		$current_datetime = new DateTimeImmutable($current_datetime_precise->format('Y-m-d H:i'));
+
+		if ($schedule_date === $current_datetime->format('Y-m-d')) {
+			// $html .= '<time class="acfes-time acfes-time--current" style="--acfes-grid-row: time-' . $current_datetime->format('U') . ';" title="' . $current_datetime->format('g:i a') . '">Now</time>';
+			$html .= '<div class="acfes-time-current" style="--acfes-grid-row: time-' . $current_datetime->format('U') . ';"><span title="' . $current_datetime->format('g:i a') . '">Now</span></div>';
+		}
+
+
 		foreach ( $sessions_query->posts as $session ) {
 			$classes                   = array();
 			$session                   = get_post( $session );
@@ -417,8 +434,10 @@ function acfes_schedule_output( $props ) {
 			$session_scheduled         = get_field( 'acfes_scheduled_session', $session->ID );
 			$session_type              = get_field( 'acfes_session_type', $session->ID );
 			$speakers                  = get_field( 'acfes_session_speakers', $session->ID );
-			$start_time                = strtotime( get_field( 'acfes_session_time', $session->ID ) );
-			$end_time                  = strtotime( get_field( 'acfes_session_end_time', $session->ID ) );
+			$start_time                = get_field( 'acfes_session_time', $session->ID ) ? new DateTimeImmutable(get_field( 'acfes_session_time', $session->ID )) : '';
+			$end_time                  = get_field( 'acfes_session_end_time', $session->ID ) ? new DateTimeImmutable(get_field( 'acfes_session_end_time', $session->ID )) : '';
+			$is_current                = ($current_datetime > $start_time && $current_datetime < $end_time);
+			$is_passed                 = ($current_datetime > $end_time);
 
 			if ( ! $session_scheduled ) {
 				continue; // ignore if it shouldn't go on this grid
@@ -465,18 +484,30 @@ function acfes_schedule_output( $props ) {
 			}
 			$classes[] = 'acfes-session-type-' . $session_type;
 			$classes[] = 'acfes-session-' . $session->post_name;
+			
+			if ($is_current) {
+				$classes[] = 'acfes-session-is-current';
+			}
+			if ($is_passed) {
+				$classes[] = 'acfes-session-is-passed';
+			}
 
 			$locations_array_length = esc_attr( count( $locations_array ) );
 			// $tracks_array_length = esc_attr( count( $tracks_array ) );
 
-			$grid_column = '--acfes-grid-column: 2;';
+			$grid_column_start = '--acfes-grid-column-start: 2;';
+			$grid_column_end = '--acfes-grid-column-end: auto;';
 			if ( $locations_array_length >= 1 ) {
-				$grid_column = '--acfes-grid-column: ' . $locations_array[0] . ' / ' . $locations_array[ $locations_array_length - 1 ] . ';';
+				$grid_column_start = '--acfes-grid-column-start: ' . $locations_array[0] . ';';
+				$grid_column_end = '--acfes-grid-column-end: ' . $locations_array[ $locations_array_length - 1 ] . ';';
 			}
 
-			$html .= '<div class="acfes-event-card is-layout-flow has-gap-10 ' . esc_attr( implode( ' ', $classes ) ) . ' ' . $locations_classes . '" style="--acfes-grid-row: time-' . $start_time . ' / time-' . $end_time . '; ' . $grid_column . '">';
+			$grid_row_start = '--acfes-grid-row-start: time-' . $start_time->format('U') . ';';
+			$grid_row_end = '--acfes-grid-row-end: time-' . $end_time->format('U') . ';';
+
+			$html .= '<div class="acfes-event-card is-layout-flow has-gap-10 ' . esc_attr( implode( ' ', $classes ) ) . ' ' . $locations_classes . '" style="' . $grid_column_start . $grid_column_end . $grid_row_start . $grid_row_end . '">';
 			
-			$html .= '<div class="acfes-session-title is-layout-flow has-gap-05">';
+			$html .= '<div class="acfes-session-title is-layout-flex is-vertical has-gap-05">';
 
 				if (!empty($session_tracks)) {
 					$html .= '<p class="acfes-session-track">';
@@ -504,7 +535,7 @@ function acfes_schedule_output( $props ) {
 			// }
 
 			// Add time to the output string
-			$html .= '<p class="acfes-session-time">' . gmdate( $time_format, $start_time ) . ' - ' . gmdate( $time_format, $end_time ) . '</p>';
+			$html .= '<p class="acfes-session-time">' . $start_time->format($time_format) . ' - ' . $end_time->format($time_format) . '</p>';
 
 			if (!empty($session_locations) && count($session_locations) == 1) {
 				$html .= '<p class="acfes-session-location">';
@@ -535,8 +566,8 @@ function acfes_schedule_output( $props ) {
 		}
 
 		// The lines behind the grid
-		if ( $interval_times ) {
-			foreach ( $interval_times as $array_time ) {
+		if ( $interval_times_15m ) {
+			foreach ( $interval_times_15m as $array_time ) {
 				$html .= '<div class="acfes-time-line" style="--acfes-grid-row: time-' . $array_time . ';"></div>';
 			}
 		}
