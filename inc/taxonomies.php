@@ -25,7 +25,7 @@ function acfes_register_taxonomies() {
 		$location_args = array(
 			'hierarchical'      => true,
 			'labels'            => $location_labels,
-			'public'            => true,
+			'public'            => false,
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'show_in_nav_menus' => true,
@@ -60,7 +60,7 @@ function acfes_register_taxonomies() {
 		$track_args = array(
 			'hierarchical'      => true,
 			'labels'            => $track_labels,
-			'public'            => true,
+			'public'            => false,
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'show_in_nav_menus' => true,
@@ -106,7 +106,7 @@ function acfes_register_taxonomies() {
 		);
 
 		// Register Session Category taxonomy to whichever post types are in the array
-		register_taxonomy( 'acfes_sponsor', array( 'acfes_sponsor' ), $track_args );
+		// register_taxonomy( 'acfes_sponsor', array( 'acfes_sponsor' ), $track_args );
 
 		// Add new Speaker Category taxonomy, make it hierarchical (like categories)
 		$speaker_labels = array(
