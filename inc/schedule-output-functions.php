@@ -412,7 +412,7 @@ function acfes_schedule_output( $props ) {
 
 
 		// Get the current time, then round to the nearest minute and show a line
-		$current_datetime_precise = new DateTimeImmutable();
+		$current_datetime_precise = new DateTimeImmutable("now", wp_timezone());
 		// $current_datetime_precise = new DateTimeImmutable('2026-04-22 09:02:53'); for testing
 		$current_datetime = new DateTimeImmutable($current_datetime_precise->format('Y-m-d H:i'));
 
