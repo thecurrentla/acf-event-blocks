@@ -277,6 +277,7 @@ function acfes_schedule_output( $props ) {
 	$columns                         = acfes_get_schedule_columns( $locations, $sessions, $locations_explicitly_specified );
 	$rand                            = wp_rand( 1, 100 );
 
+	wp_enqueue_script("acfes-schedule-now-line");
 
 	// do_action("qm/debug", $columns);
 
@@ -418,7 +419,8 @@ function acfes_schedule_output( $props ) {
 
 		if ($schedule_date === $current_datetime->format('Y-m-d')) {
 			// $html .= '<time class="acfes-time acfes-time--current" style="--acfes-grid-row: time-' . $current_datetime->format('U') . ';" title="' . $current_datetime->format('g:i a') . '">Now</time>';
-			$html .= '<div class="acfes-time-current" style="--acfes-grid-row: time-' . $current_datetime->format('U') . ';"><span title="' . $current_datetime->format('g:i a') . '">Now</span></div>';
+			$html .= '<div class="acfes-time-current" style="--acfes-grid-row: var(--acfes-current-time, time-' . $current_datetime->format('U') . ');"><span title="' . $current_datetime->format('g:i a') . '">Now</span></div>';
+			$html .= '<script>console.log(' . json_encode($current_datetime->format('U')) . ');</script>';
 		}
 
 
