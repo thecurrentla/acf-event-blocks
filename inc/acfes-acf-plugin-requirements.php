@@ -45,23 +45,23 @@ if ( ! function_exists( 'acfes_register_required_plugins' ) ) {
 			// Include a plugin from a GitHub repository in your theme.
 			// This presumes that the plugin code is based in the root of the GitHub repository
 			// and not in a subdirectory ('/src') of the repository.
-			array(
-				'name'             => 'ACF Taxonomy Chooser',
-				'slug'             => 'acf-taxonomy-chooser',
-				'source'           => 'https://github.com/marktimemedia/acf-term-and-taxonomy-chooser/archive/master.zip',
-				'required'         => true, // If false, the plugin is only 'recommended' instead of required.
-				'force_activation' => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-				'external_url'     => 'https://github.com/marktimemedia/acf-term-and-taxonomy-chooser', // If set, overrides default API URL and points to an external URL.
-			),
+			// array(
+			// 	'name'             => 'ACF Taxonomy Chooser',
+			// 	'slug'             => 'acf-taxonomy-chooser',
+			// 	'source'           => 'https://github.com/marktimemedia/acf-term-and-taxonomy-chooser/archive/master.zip',
+			// 	'required'         => true, // If false, the plugin is only 'recommended' instead of required.
+			// 	'force_activation' => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+			// 	'external_url'     => 'https://github.com/marktimemedia/acf-term-and-taxonomy-chooser', // If set, overrides default API URL and points to an external URL.
+			// ),
 
-			array(
-				'name'             => 'ACF Post Type Selector',
-				'slug'             => 'acf-post-type-selector',
-				'source'           => 'https://github.com/TimPerry/acf-post-type-selector/archive/master.zip',
-				'required'         => true, // If false, the plugin is only 'recommended' instead of required.
-				'force_activation' => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-				'external_url'     => 'https://github.com/TimPerry/acf-post-type-selector', // If set, overrides default API URL and points to an external URL.
-			),
+			// array(
+			// 	'name'             => 'ACF Post Type Selector',
+			// 	'slug'             => 'acf-post-type-selector',
+			// 	'source'           => 'https://github.com/TimPerry/acf-post-type-selector/archive/master.zip',
+			// 	'required'         => true, // If false, the plugin is only 'recommended' instead of required.
+			// 	'force_activation' => true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+			// 	'external_url'     => 'https://github.com/TimPerry/acf-post-type-selector', // If set, overrides default API URL and points to an external URL.
+			// ),
 
 			// array(
 			// 	'name'      => 'FacetWP',
