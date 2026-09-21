@@ -33,11 +33,11 @@
 	.acfes-session-title {
 		font-size: var(--font-size-sm);
 		line-height: 1.2;
-		font-weight: 700;
+		font-weight: var(--font-weight-strong);
 	}
 	.acfes-session-track {
 		font-size: var(--font-size-2xs);
-		font-weight: 900;
+		font-weight: var(--font-weight-semi);
 	}
 	.acfes-session-location {
 	}
