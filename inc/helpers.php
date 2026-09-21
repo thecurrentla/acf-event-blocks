@@ -499,12 +499,15 @@ if ( ! function_exists( 'acfes_check_all_user_posts' ) ) {
 /**
 * Return Post Object URL List
 */
-function acfes_get_post_object_url_list( $post_objects ) {
+function acfes_get_post_object_url_list( $post_objects, $prefix = ""  ) {
 	if ( $post_objects ) {
 		$num_items = count( $post_objects ); // how many terms are there
 		$i         = 0;
 
 		$open  = '<div class="url-list">';
+		if (!empty($prefix)) {
+			$open .= '<p class="url-list-title"><em>' . $prefix . '</em></p>';
+		}
 		$out[] = '<ul>';
 		foreach ( $post_objects as $post_object ) {
 			if ( ++$i === $num_items ) { // if this is the last one
@@ -530,12 +533,15 @@ function acfes_get_post_object_url_list( $post_objects ) {
 * Return Post Object Anchor List
 */
 
-function acfes_get_post_object_anchor_list( $post_objects ) {
+function acfes_get_post_object_anchor_list( $post_objects, $prefix = ""  ) {
 	if ( $post_objects ) {
 		$num_items = count( $post_objects ); // how many terms are there
 		$i         = 0;
 
 		$open  = '<div class="url-list">';
+		if (!empty($prefix)) {
+			$open .= '<p class="url-list-title"><em>' . $prefix . '</em></p>';
+		}
 		$out[] = '<ul>';
 		foreach ( $post_objects as $post_object ) {
 			if ( ++$i === $num_items ) { // if this is the last one
@@ -561,12 +567,17 @@ function acfes_get_post_object_anchor_list( $post_objects ) {
 * Return Post Object Text List
 */
 
-function acfes_get_post_object_text_list( $post_objects ) {
+function acfes_get_post_object_text_list( $post_objects, $prefix = "" ) {
 	if ( $post_objects ) {
 		$num_items = count( $post_objects ); // how many terms are there
 		$i         = 0;
 
 		$open  = '<div class="url-list">';
+
+		if (!empty($prefix)) {
+			$open .= '<p class="url-list-title"><em>' . $prefix . '</em></p>';
+		}
+
 		$out[] = '<ul>';
 		foreach ( $post_objects as $post_object ) {
 			if ( ++$i === $num_items ) { // if this is the last one
@@ -581,6 +592,7 @@ function acfes_get_post_object_text_list( $post_objects ) {
 				);
 			}
 		}
+
 		$close = "</ul></div>\n";
 		return $open . implode( '', $out ) . $close;
 	}

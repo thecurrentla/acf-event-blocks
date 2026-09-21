@@ -256,6 +256,8 @@
 	--card-border-color: var(--color-green-400);
 	--card-border-color--shifted: var(--color-green-500);
 }
+.acfes-event-card.acfes-track-summit,
+.acfes-event-card.acfes-session-type-session:not([class*="acfes-track-"]),
 .acfes-event-card.acfes-track-growth-planning,
 .acfes-event-card.acfes-track-growth-economy {
 	--card-background-color: var(--color-blue-100);
@@ -298,31 +300,14 @@
 
 	[class*="acfes-session-type-"] {
 		border-width: 1px;
-		border-bottom-width: 0;
 	}
 
 	.acfes-session-type-session {
 		background-color: transparent;
 	}
 
-	.acfes-col-time {
-		width: 120px;
-	}
-
-	.acfes-col-time,
-	.acfes-col-location {
-		// header
-		background-color: #eee;
-	}
-
 	.acfes-time {
-		background-color: transparent;
 		border-width: 1px;
-	}
-
-	.acfes-session-empty {
-		background-color: transparent;
-		border-right-width: 1px;
 	}
 
 	// Table Metadata on Mobile
@@ -341,128 +326,51 @@
 	table-layout: fixed;
 	margin-bottom: 0;
 
+	font-family: var(--font-family-display);
+
 	tbody,
 	tr,
 	td,
 	th {
-		text-align: center;
 		vertical-align: top;
 	}
 
 	tr {
 		td {
-			padding-top: 1em;
-			padding-bottom: 1em;
-			white-space: pre-wrap;
-			word-break: break-word;
+			padding-block: 0.5em;
+			padding-inline: 0.5em;
 		}
 	}
 
 	thead th {
 		border-bottom: none;
 		font-weight: bold;
-		padding-top: 0.8em;
-		padding-bottom: 0.8em;
+		padding-block: 0.5em;
+		padding-inline: 0.5em;
 		border-bottom: none;
+		text-align: left;
 	}
 
-	.acfes-session-empty {
-		// border-right: 1px solid #dee2e6;
+	.acfes-col-time {
+		width: 10ch;
 	}
 
-	.acfes-time {
-		min-width: 105px;
+	.acfes-session-track {
+		font-size: smaller;
+		font-weight: 600;
 	}
 
-	.acfes-track-description,
+	.acfes-session-title a {
+		font-size: larger;
+		font-weight: 500;
+	}
+
+	.acfes-session-title--unlinked {
+		font-style: italic;
+	}
+
 	.acfes-session-speakers {
-		display: inline-block;
-	}
-
-	.acfes-global-session {
-		td:not(.acfes-time) {
-			padding: 1.5em 0 !important;
-		}
-	}
-
-	@media screen and (max-width: $med-bp) {
-		width: 100%;
-
-		tbody,
-		tr,
-		td,
-		th {
-			display: block;
-		}
-
-		tr {
-			td {
-			}
-		}
-
-		thead {
-			display: none;
-		}
-
-		[class*="acfes-session-type-"] {
-			border-width: 0 !important;
-			border-top: 0;
-		}
-
-		.acfes-session-empty {
-			display: none;
-		}
-
-		.acfes-time {
-			font-size: 1.2em;
-			padding: 0 1em;
-			margin-top: 1em;
-			border-left: 0;
-			border-right: 0;
-		}
-
-		.acfes-session-type-session {
-			line-height: 1.4;
-		}
-
-		.acfes-session-type-session {
-			&:before {
-				content: attr(data-track-title);
-				display: block;
-				font-size: 110%;
-				line-height: 1;
-				margin-bottom: 0.5em;
-				padding: 0.3em 0.8em;
-			}
-		}
-
-		.acfes-session-type-session + .acfes-session-type-session {
-			&:before {
-				border-top: 1px dotted #ccc;
-				padding-top: 0.8em;
-			}
-		}
-
-		.acfes-global-session {
-			.acfes-session-type-session {
-				&:before {
-					display: none;
-				}
-			}
-		}
-
-		.acfes-session-title {
-			display: block;
-			padding: 0.8em;
-		}
-
-		.acfes-session-speakers {
-			display: block;
-		}
-
-		&.acfes-color-scheme-dark {
-			.acfes-session-type-session:before {
-			}
-		}
+		font-size: smaller;
+		margin-top: 0.5em;
 	}
 }

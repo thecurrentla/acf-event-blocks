@@ -13,24 +13,11 @@
 }
 
 .url-list {
-	display: block;
 	ul {
-		display: block;
-		list-style: none;
-		margin-left: 0;
-		padding: 0;
+		padding-left: 1.25em;
 	}
-
 	li {
-		display: inline;
 		margin: 0;
-
-		&:after {
-			content: ", ";
-		}
-		&:last-of-type:after {
-			content: "";
-		}
 	}
 }
 

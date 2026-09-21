@@ -280,7 +280,6 @@ function acfes_schedule_output( $props ) {
 
 	// do_action("qm/debug", $columns);
 
-	// Table Layout
 	if ( 'grid' === $attr['schedule_layout'] && $sessions ) {
 
 		$schedule_date = $attr['date'];
@@ -433,7 +432,7 @@ function acfes_schedule_output( $props ) {
 			$session_locations_titles  = is_array( $session_locations ) ? implode( ', ', wp_list_pluck( $session_locations, 'name' ) ) : '';
 			$session_scheduled         = get_field( 'acfes_scheduled_session', $session->ID );
 			$session_type              = get_field( 'acfes_session_type', $session->ID );
-			$speakers                  = get_field( 'acfes_session_speakers', $session->ID );
+			$speakers                  = get_field( 'session_speakers', $session->ID );
 			$start_time                = get_field( 'acfes_session_time', $session->ID ) ? new DateTimeImmutable(get_field( 'acfes_session_time', $session->ID )) : '';
 			$end_time                  = get_field( 'acfes_session_end_time', $session->ID ) ? new DateTimeImmutable(get_field( 'acfes_session_end_time', $session->ID )) : '';
 			$is_current                = ($current_datetime > $start_time && $current_datetime < $end_time);
@@ -544,15 +543,15 @@ function acfes_schedule_output( $props ) {
 			}
 
 			// Add speakers names to the output string.
-			if ( $speakers ) {
-				if ( 'anchor' == $attr['speaker_link'] ) {
-					$html .= '<div class="acfes-session-speakers">' . acfes_get_post_object_anchor_list( $speakers ) . '</div>';
-				} elseif ( 'permalink' === $attr['speaker_link'] ) {
-					$html .= '<div class="acfes-session-speakers">' . acfes_get_post_object_url_list( $speakers ) . '</div>';
-				} else {
-					$html .= '<div class="acfes-session-speakers">' . acfes_get_post_object_text_list( $speakers ) . '</div>';
-				}
-			}
+			// if ( $speakers ) {
+			// 	if ( 'anchor' == $attr['speaker_link'] ) {
+			// 		$html .= '<div class="acfes-session-speakers">' . acfes_get_post_object_anchor_list( $speakers ) . '</div>';
+			// 	} elseif ( 'permalink' === $attr['speaker_link'] ) {
+			// 		$html .= '<div class="acfes-session-speakers">' . acfes_get_post_object_url_list( $speakers ) . '</div>';
+			// 	} else {
+			// 		$html .= '<div class="acfes-session-speakers">' . acfes_get_post_object_text_list( $speakers ) . '</div>';
+			// 	}
+			// }
 			
 			if ( function_exists( 'get_favorites_button' ) ) {
 				$html .= get_favorites_button( $session->ID );
@@ -588,11 +587,12 @@ function acfes_schedule_output( $props ) {
 		foreach ( $columns as $acfes_term_id ) {
 			$location = get_term( $acfes_term_id, 'acfes_location' );
 			$html .= sprintf(
-				'<th class="acfes-col-location"> <span class="acfes-location-name">%s</span> <span class="acfes-location-description">%s</span> </th>',
-				isset( $location->term_id ) ? esc_html( $location->name ) : '',
+				'<th> <span class="acfes-location-name">%s</span> <span class="acfes-location-description">%s</span> </th>',
+				isset( $location->term_id ) ? esc_html( $location->name ) : 'Session',
 				isset( $location->term_id ) ? esc_html( $location->description ) : ''
 			);
 		}
+
 
 		$html .= '</tr>';
 		$html .= '</thead>';
@@ -637,7 +637,8 @@ function acfes_schedule_output( $props ) {
 				$session_track_titles = is_array( $session_tracks ) ? implode( ', ', wp_list_pluck( $session_tracks, 'name' ) ) : '';
 				$session_type         = get_field( 'acfes_session_type', $session->ID );
 				$session_scheduled    = get_field( 'acfes_scheduled_session', $session->ID );
-				$speakers             = get_field( 'acfes_session_speakers', $session->ID );
+				$excerpt              = has_excerpt($session->ID) ? get_the_excerpt( $session->ID ) : false;
+				$speakers             = get_field( 'session_speakers', $session->ID );
 
 				if ( ! $session_scheduled ) {
 					continue; // ignore if it shouldn't go on this grid
@@ -659,27 +660,32 @@ function acfes_schedule_output( $props ) {
 
 				$content  = '';
 				$content .= '<div class="acfes-session-cell-content">';
+			
+				if ( $session_type == 'keynote' ) {
+					$content .= '<div class="acfes-session-track">Keynote</div>';
+				}
 
 				// Determine the session title
 				if ( 'permalink' === $attr['session_link'] && ( 'break' !== $session_type ) ) {
-					$session_title_html = sprintf( '<strong class=""><a class="acfes-session-title is-layout-stretched-link" href="%s">%s</a></strong>', esc_url( get_permalink( $session->ID ) ), $session_title );
+					$session_title_html = sprintf( '<p class="acfes-session-title"><a href="%s">%s</a></p>', esc_url( get_permalink( $session->ID ) ), $session_title );
 				} elseif ( 'anchor' === $attr['session_link'] && ( 'break' !== $session_type ) ) {
-					$session_title_html = sprintf( '<strong class=""><a class="acfes-session-title is-layout-stretched-link" href="%s">%s</a></strong>', esc_url( '#' . get_post_field( 'post_name', $session->ID ) ), $session_title );
+					$session_title_html = sprintf( '<p class="acfes-session-title"><a href="%s">%s</a>', esc_url( '#' . get_post_field( 'post_name', $session->ID ) ), $session_title );
 				} else {
-					$session_title_html = sprintf( '<strong class=""><span class="acfes-session-title">%s</span></strong>', $session_title );
+					$session_title_html = sprintf( '<p class="acfes-session-title acfes-session-title--unlinked">%s</p>', $session_title );
 				}
 
 				$content .= $session_title_html;
 
+
+			
+				if ( !empty($excerpt) ) {
+					$content .= '<div class="acfes-session-excerpt">' . wpautop( $excerpt ) . '</div>';
+				}
+
+
 				// Add speakers names to the output string.
 				if ( $speakers ) {
-					if ( 'anchor' === $attr['speaker_link'] ) {
-						$content .= '<span class="acfes-session-speakers">' . acfes_get_post_object_anchor_list( $speakers ) . '</span>';
-					} elseif ( 'permalink' === $attr['speaker_link'] ) {
-						$content .= '<span class="acfes-session-speakers">' . acfes_get_post_object_url_list( $speakers ) . '</span>';
-					} else {
-						$content .= '<span class="acfes-session-speakers">' . acfes_get_post_object_text_list( $speakers ) . '</span>';
-					}
+					$content .= '<div class="acfes-session-speakers">' . acfes_get_post_object_url_list( $speakers, "Speakers:" ) . '</div>';
 				}
 
 				if ( function_exists( 'get_favorites_button' ) ) {
@@ -712,6 +718,7 @@ function acfes_schedule_output( $props ) {
 		$html .= '</table>';
 		$html .= '</div>';
 		return $html;
+	} elseif ( 'cards' === $attr['schedule_layout'] && $sessions ) {
 	} else {
 		return '<p>No sessions can be found on ' . $attr['date'] . '</p>';
 	}
