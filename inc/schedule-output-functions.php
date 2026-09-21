@@ -512,6 +512,8 @@ function acfes_schedule_output( $props ) {
 					$html .= '<p class="acfes-session-track">';
 						$html .= implode(", ", wp_list_pluck($session_tracks, "name"));
 					$html .= '</p>';
+				} else if ( $session_type == 'keynote' ) {
+					$content .= '<p class="acfes-session-track">Keynote</p>';
 				}
 
 				$html .= '<p class="acfes-session-title">';
@@ -526,12 +528,6 @@ function acfes_schedule_output( $props ) {
 				$html .= '</p>';
 			
 			$html .= '</div>';
-
-			// if (!empty($session_tracks)) {
-			// 	$html .= '<p class="acfes-session-track">';
-			// 		$html .= implode(", ", wp_list_pluck($session_tracks, "name"));
-			// 	$html .= '</p>';
-			// }
 
 			// Add time to the output string
 			$html .= '<p class="acfes-session-time">' . $start_time->format($time_format) . ' - ' . $end_time->format($time_format) . '</p>';
@@ -662,7 +658,7 @@ function acfes_schedule_output( $props ) {
 				$content .= '<div class="acfes-session-cell-content">';
 			
 				if ( $session_type == 'keynote' ) {
-					$content .= '<div class="acfes-session-track">Keynote</div>';
+					$content .= '<p class="acfes-session-track">Keynote</p>';
 				}
 
 				// Determine the session title
